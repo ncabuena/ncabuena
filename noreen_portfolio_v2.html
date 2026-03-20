@@ -1,0 +1,680 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap');
+
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --cream:#FDFAF5;
+  --warm:#F5EFE6;
+  --brown:#2C1810;
+  --mid:#7A5C4A;
+  --accent:#D46E2A;
+  --accent2:#E8A96A;
+  --green:#3A7D5C;
+  --border:#E8DDD0;
+  --text:#2A1F17;
+  --muted:#9A8880;
+  --white:#FFFFFF;
+}
+html{scroll-behavior:smooth;}
+body{background:var(--cream);color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;line-height:1.6;overflow-x:hidden;}
+
+/* ── NAV ── */
+nav{
+  position:sticky;top:0;z-index:999;
+  background:rgba(253,250,245,0.92);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+  padding:0 40px;
+  display:flex;justify-content:space-between;align-items:center;
+  height:60px;
+}
+.logo{
+  font-family:'Playfair Display',serif;
+  font-size:22px;font-weight:700;color:var(--brown);
+  display:flex;align-items:center;gap:6px;
+}
+.logo-dot{
+  width:8px;height:8px;border-radius:50%;
+  background:var(--accent);
+  display:inline-block;
+  animation:pulse 2s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:1;}50%{transform:scale(1.4);opacity:0.7;}}
+.nav-links{display:flex;gap:24px;align-items:center;}
+.nav-links a{font-size:13px;font-weight:500;color:var(--muted);text-decoration:none;transition:color 0.2s;}
+.nav-links a:hover{color:var(--accent);}
+.nav-cta{
+  background:var(--accent);color:#fff;
+  padding:8px 18px;border-radius:100px;
+  font-size:12px;font-weight:600;
+  text-decoration:none;
+  transition:all 0.2s;
+  border:none;cursor:pointer;
+}
+.nav-cta:hover{background:#c05e20;transform:translateY(-1px);}
+
+/* ── HERO ── */
+.hero{
+  min-height:92vh;
+  display:grid;grid-template-columns:1fr 1fr;
+  position:relative;overflow:hidden;
+}
+.hero-left{
+  padding:80px 60px 80px 60px;
+  display:flex;flex-direction:column;justify-content:center;
+  position:relative;z-index:2;
+}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(212,110,42,0.1);
+  border:1px solid rgba(212,110,42,0.25);
+  border-radius:100px;
+  padding:6px 14px;
+  font-size:11px;font-weight:600;
+  color:var(--accent);letter-spacing:0.06em;
+  margin-bottom:28px;width:fit-content;
+}
+.badge-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse 1.5s ease-in-out infinite;}
+.hero-name{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(40px,5vw,68px);
+  font-weight:900;line-height:1.05;
+  letter-spacing:-0.02em;
+  margin-bottom:6px;
+  color:var(--brown);
+}
+.hero-name em{color:var(--accent);font-style:italic;}
+.hero-tagline{
+  font-size:clamp(14px,1.5vw,17px);
+  color:var(--mid);font-weight:400;
+  margin-bottom:32px;line-height:1.7;
+  max-width:440px;
+}
+.hero-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:40px;}
+.htag{
+  padding:6px 14px;border-radius:100px;
+  font-size:12px;font-weight:500;
+  border:1px solid var(--border);
+  color:var(--mid);background:var(--white);
+  transition:all 0.2s;cursor:default;
+}
+.htag:hover{border-color:var(--accent);color:var(--accent);background:rgba(212,110,42,0.05);}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap;}
+.btn-main{
+  background:var(--accent);color:#fff;
+  padding:14px 28px;border-radius:100px;
+  font-size:13px;font-weight:600;
+  border:none;cursor:pointer;
+  transition:all 0.25s;
+  display:flex;align-items:center;gap:8px;
+}
+.btn-main:hover{background:#c05e20;transform:translateY(-2px);box-shadow:0 8px 24px rgba(212,110,42,0.3);}
+.btn-sec{
+  background:transparent;color:var(--brown);
+  padding:14px 28px;border-radius:100px;
+  font-size:13px;font-weight:600;
+  border:2px solid var(--border);cursor:pointer;
+  transition:all 0.25s;
+}
+.btn-sec:hover{border-color:var(--accent);color:var(--accent);}
+
+.hero-right{
+  background:var(--warm);
+  display:flex;flex-direction:column;justify-content:center;
+  padding:60px 60px 60px 40px;
+  position:relative;
+  overflow:hidden;
+}
+/* decorative circles */
+.hero-right::before{
+  content:'';position:absolute;
+  width:300px;height:300px;border-radius:50%;
+  background:rgba(212,110,42,0.06);
+  top:-80px;right:-80px;
+}
+.hero-right::after{
+  content:'';position:absolute;
+  width:200px;height:200px;border-radius:50%;
+  background:rgba(58,125,92,0.06);
+  bottom:-60px;left:-40px;
+}
+
+/* AVATAR CARD */
+.avatar-card{
+  background:var(--white);
+  border-radius:20px;
+  border:1px solid var(--border);
+  padding:28px;
+  margin-bottom:20px;
+  position:relative;z-index:1;
+  display:flex;align-items:center;gap:20px;
+}
+.avatar{
+  width:72px;height:72px;border-radius:50%;
+  background:linear-gradient(135deg,var(--accent) 0%,var(--accent2) 100%);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Playfair Display',serif;
+  font-size:26px;font-weight:700;color:#fff;
+  flex-shrink:0;
+}
+.avatar-info{}
+.avatar-name{font-size:16px;font-weight:700;color:var(--brown);margin-bottom:3px;}
+.avatar-role{font-size:12px;color:var(--muted);}
+.avatar-status{
+  display:inline-flex;align-items:center;gap:5px;
+  background:rgba(58,125,92,0.1);
+  border:1px solid rgba(58,125,92,0.2);
+  border-radius:100px;padding:4px 10px;
+  font-size:11px;font-weight:600;color:var(--green);
+  margin-top:6px;
+}
+.status-dot{width:5px;height:5px;border-radius:50%;background:var(--green);animation:pulse 1.5s ease-in-out infinite;}
+
+/* MINI STATS */
+.mini-stats{
+  display:grid;grid-template-columns:1fr 1fr;gap:12px;
+  position:relative;z-index:1;
+}
+.mini-stat{
+  background:var(--white);
+  border:1px solid var(--border);
+  border-radius:14px;padding:16px;
+}
+.ms-val{
+  font-family:'Playfair Display',serif;
+  font-size:24px;font-weight:700;
+  color:var(--accent);line-height:1;margin-bottom:4px;
+}
+.ms-label{font-size:11px;color:var(--muted);font-weight:500;}
+
+/* ── MARQUEE ── */
+.marquee-wrap{
+  background:var(--accent);
+  padding:12px 0;overflow:hidden;
+  border-top:1px solid rgba(255,255,255,0.1);
+  border-bottom:1px solid rgba(255,255,255,0.1);
+}
+.marquee-track{
+  display:flex;gap:0;
+  animation:marquee 20s linear infinite;
+  width:max-content;
+}
+@keyframes marquee{from{transform:translateX(0);}to{transform:translateX(-50%);}  }
+.marquee-item{
+  font-size:12px;font-weight:600;
+  color:rgba(255,255,255,0.9);
+  letter-spacing:0.08em;text-transform:uppercase;
+  padding:0 28px;white-space:nowrap;
+  display:flex;align-items:center;gap:12px;
+}
+.marquee-item::after{content:'✦';color:rgba(255,255,255,0.4);font-size:8px;}
+
+/* ── SECTIONS ── */
+section{padding:80px 60px;}
+.sec-eyebrow{
+  font-size:11px;font-weight:600;
+  letter-spacing:0.2em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:10px;
+}
+.sec-title{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(28px,3vw,42px);
+  font-weight:700;line-height:1.15;
+  color:var(--brown);margin-bottom:12px;
+  letter-spacing:-0.01em;
+}
+.sec-title em{font-style:italic;color:var(--accent);}
+.sec-sub{font-size:15px;color:var(--muted);max-width:520px;line-height:1.8;margin-bottom:48px;}
+
+/* ── SERVICES ── */
+.services{background:var(--white);}
+.services-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:20px;
+}
+.svc-card{
+  background:var(--cream);
+  border:1px solid var(--border);
+  border-radius:16px;padding:28px 24px;
+  transition:all 0.3s;
+  cursor:pointer;
+  position:relative;overflow:hidden;
+}
+.svc-card::before{
+  content:'';position:absolute;
+  top:0;left:0;right:0;height:3px;
+  background:var(--accent);
+  transform:scaleX(0);transform-origin:left;
+  transition:transform 0.3s;
+}
+.svc-card:hover::before{transform:scaleX(1);}
+.svc-card:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(44,24,16,0.08);border-color:rgba(212,110,42,0.3);}
+.svc-icon{
+  font-size:32px;margin-bottom:16px;
+  display:block;
+}
+.svc-title{
+  font-family:'Playfair Display',serif;
+  font-size:18px;font-weight:700;
+  color:var(--brown);margin-bottom:8px;
+}
+.svc-desc{font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:16px;}
+.svc-items{display:flex;flex-wrap:wrap;gap:6px;}
+.svc-item{
+  font-size:11px;font-weight:500;
+  padding:4px 10px;border-radius:100px;
+  background:rgba(212,110,42,0.08);
+  color:var(--accent);border:1px solid rgba(212,110,42,0.15);
+}
+
+/* ── ABOUT / STORY ── */
+.about{background:var(--warm);}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;}
+.about-visual{
+  background:var(--white);
+  border-radius:20px;border:1px solid var(--border);
+  padding:32px;
+}
+.timeline{display:flex;flex-direction:column;gap:0;}
+.tl-item{
+  display:flex;gap:16px;
+  padding-bottom:24px;
+  position:relative;
+}
+.tl-item:not(:last-child)::after{
+  content:'';position:absolute;
+  left:15px;top:32px;bottom:0;
+  width:1px;background:var(--border);
+}
+.tl-dot{
+  width:32px;height:32px;border-radius:50%;
+  background:var(--accent);
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;flex-shrink:0;
+  border:3px solid var(--cream);
+  box-shadow:0 0 0 2px var(--accent);
+  color:white;font-weight:700;font-size:11px;
+}
+.tl-content{}
+.tl-year{font-size:11px;color:var(--accent);font-weight:600;letter-spacing:0.05em;margin-bottom:2px;}
+.tl-title{font-size:14px;font-weight:600;color:var(--brown);margin-bottom:2px;}
+.tl-sub{font-size:12px;color:var(--muted);}
+
+.about-text{}
+.fun-facts{display:flex;flex-direction:column;gap:12px;margin-top:28px;}
+.fun-fact{
+  display:flex;align-items:center;gap:14px;
+  padding:14px 18px;
+  background:var(--white);
+  border-radius:12px;border:1px solid var(--border);
+  font-size:13px;color:var(--text);
+}
+.ff-icon{font-size:20px;flex-shrink:0;}
+
+/* ── TOOLS ── */
+.tools{background:var(--white);}
+.tools-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:16px;
+}
+.tool-card{
+  background:var(--cream);
+  border:1px solid var(--border);
+  border-radius:14px;padding:20px;
+  text-align:center;
+  transition:all 0.25s;
+}
+.tool-card:hover{transform:translateY(-3px);border-color:var(--accent);box-shadow:0 8px 24px rgba(212,110,42,0.1);}
+.tool-icon{font-size:28px;margin-bottom:10px;display:block;}
+.tool-name{font-size:13px;font-weight:600;color:var(--brown);margin-bottom:4px;}
+.tool-level{font-size:11px;color:var(--muted);}
+.tool-bar{
+  height:3px;background:var(--border);border-radius:100px;
+  margin-top:10px;overflow:hidden;
+}
+.tool-fill{height:100%;background:var(--accent);border-radius:100px;}
+
+/* ── SAMPLE WORK ── */
+.work{background:var(--warm);}
+.work-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;}
+.work-card{
+  background:var(--white);
+  border-radius:16px;border:1px solid var(--border);
+  overflow:hidden;
+  transition:all 0.3s;cursor:pointer;
+}
+.work-card:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(44,24,16,0.1);}
+.work-thumb{
+  height:160px;display:flex;align-items:center;justify-content:center;
+  font-size:40px;position:relative;overflow:hidden;
+}
+.wt1{background:linear-gradient(135deg,#2C1810 0%,#7A3E1A 100%);}
+.wt2{background:linear-gradient(135deg,#1A2C1E 0%,#2E6B40 100%);}
+.wt3{background:linear-gradient(135deg,#1A1A30 0%,#3A3A8C 100%);}
+.wt4{background:linear-gradient(135deg,#2C1A2A 0%,#7A3A70 100%);}
+.work-mock{
+  width:100px;background:rgba(255,255,255,0.1);
+  border:1px solid rgba(255,255,255,0.2);
+  border-radius:8px;padding:8px;
+}
+.wm-img{height:48px;background:rgba(255,255,255,0.15);border-radius:4px;margin-bottom:5px;}
+.wm-l{height:5px;background:rgba(255,255,255,0.25);border-radius:3px;margin-bottom:3px;}
+.wm-ls{height:4px;width:65%;background:rgba(255,255,255,0.15);border-radius:3px;}
+.work-label{
+  position:absolute;bottom:10px;left:10px;
+  font-size:9px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;
+  color:rgba(255,255,255,0.5);
+}
+.work-info{padding:18px 20px;}
+.wi-title{font-size:15px;font-weight:700;color:var(--brown);margin-bottom:4px;}
+.wi-type{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;}
+.wi-tags{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap;}
+.wi-tag{font-size:10px;padding:3px 8px;border-radius:100px;background:var(--warm);color:var(--mid);border:1px solid var(--border);}
+
+/* ── CTA ── */
+.cta-section{
+  background:var(--brown);
+  padding:80px 60px;text-align:center;
+}
+.cta-title{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(28px,4vw,50px);
+  font-weight:700;color:#fff;
+  margin-bottom:16px;letter-spacing:-0.01em;
+  line-height:1.15;
+}
+.cta-title em{color:var(--accent2);font-style:italic;}
+.cta-sub{font-size:15px;color:rgba(255,255,255,0.55);margin-bottom:40px;max-width:460px;margin-left:auto;margin-right:auto;line-height:1.8;}
+.cta-cards{display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin-bottom:40px;}
+.cta-card{
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.12);
+  border-radius:14px;padding:20px 24px;
+  min-width:160px;text-align:center;
+  transition:all 0.2s;cursor:pointer;
+}
+.cta-card:hover{background:rgba(255,255,255,0.1);border-color:var(--accent2);transform:translateY(-2px);}
+.cc-icon{font-size:24px;margin-bottom:8px;}
+.cc-label{font-size:13px;font-weight:600;color:rgba(255,255,255,0.8);}
+.cc-sub{font-size:11px;color:rgba(255,255,255,0.4);margin-top:3px;}
+.cta-btn{
+  background:var(--accent);color:#fff;
+  padding:16px 40px;border-radius:100px;
+  font-size:14px;font-weight:700;
+  border:none;cursor:pointer;
+  transition:all 0.25s;
+  display:inline-flex;align-items:center;gap:8px;
+}
+.cta-btn:hover{background:#c05e20;transform:translateY(-2px);box-shadow:0 12px 32px rgba(212,110,42,0.4);}
+
+/* ── FOOTER ── */
+footer{
+  background:#1A0F0A;
+  padding:24px 60px;
+  display:flex;justify-content:space-between;align-items:center;
+}
+.foot-logo{font-family:'Playfair Display',serif;font-size:16px;color:rgba(255,255,255,0.4);}
+.foot-note{font-size:12px;color:rgba(255,255,255,0.25);}
+
+/* RESPONSIVE */
+@media(max-width:700px){
+  nav{padding:0 20px;}
+  .hero{grid-template-columns:1fr;}
+  .hero-right{display:none;}
+  .hero-left{padding:60px 24px;}
+  section{padding:60px 24px;}
+  .services-grid,.tools-grid{grid-template-columns:1fr 1fr;}
+  .about-grid,.work-grid{grid-template-columns:1fr;}
+  .cta-section{padding:60px 24px;}
+  footer{padding:20px 24px;flex-direction:column;gap:8px;text-align:center;}
+}
+
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+.hero-badge{animation:fadeUp 0.5s 0.1s both;}
+.hero-name{animation:fadeUp 0.5s 0.2s both;}
+.hero-tagline{animation:fadeUp 0.5s 0.3s both;}
+.hero-tags{animation:fadeUp 0.5s 0.4s both;}
+.hero-btns{animation:fadeUp 0.5s 0.5s both;}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">Noreen <div class="logo-dot"></div></div>
+  <div class="nav-links">
+    <a href="#">Services</a>
+    <a href="#">Work</a>
+    <a href="#">About</a>
+    <button class="nav-cta" onclick="sendPrompt('Help me write a professional pitch email to a potential client')">Hire Me</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-left">
+    <div class="hero-badge"><div class="badge-dot"></div> Open to work · EST available</div>
+    <div class="hero-name">Hi, I'm<br><em>Noreen.</em></div>
+    <div class="hero-tagline">Your all-in-one Virtual Assistant — I handle your social media, design, and admin so you can focus on what actually grows your business.</div>
+    <div class="hero-tags">
+      <span class="htag">📱 Social Media</span>
+      <span class="htag">🎨 Canva Design</span>
+      <span class="htag">🗂️ Admin & VA</span>
+      <span class="htag">📧 Email Management</span>
+      <span class="htag">📊 Data Entry</span>
+      <span class="htag">🇺🇸 EST-Friendly</span>
+    </div>
+    <div class="hero-btns">
+      <button class="btn-main" onclick="sendPrompt('I want to hire Noreen as my VA — what are her rates and availability?')">See My Services ↓</button>
+      <button class="btn-sec" onclick="sendPrompt('Help me write a short intro message to send to a potential VA client')">Get In Touch</button>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="avatar-card">
+      <div class="avatar">NC</div>
+      <div class="avatar-info">
+        <div class="avatar-name">Noreen Christie Cabuena</div>
+        <div class="avatar-role">VA · SMM · Graphic Designer</div>
+        <div class="avatar-status"><div class="status-dot"></div> Available for new clients</div>
+      </div>
+    </div>
+    <div class="mini-stats">
+      <div class="mini-stat"><div class="ms-val">4+</div><div class="ms-label">Years in business & marketing</div></div>
+      <div class="mini-stat"><div class="ms-val">3</div><div class="ms-label">Core services offered</div></div>
+      <div class="mini-stat"><div class="ms-val">EST</div><div class="ms-label">Timezone aligned</div></div>
+      <div class="mini-stat"><div class="ms-val">100%</div><div class="ms-label">Deadline committed</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <div class="marquee-item">Social Media Management</div>
+    <div class="marquee-item">Canva Graphic Design</div>
+    <div class="marquee-item">Email Management</div>
+    <div class="marquee-item">Data Entry</div>
+    <div class="marquee-item">Calendar & Scheduling</div>
+    <div class="marquee-item">Content Planning</div>
+    <div class="marquee-item">Community Management</div>
+    <div class="marquee-item">Research & Reports</div>
+    <div class="marquee-item">Basic Photo Editing</div>
+    <div class="marquee-item">Facebook · Instagram · TikTok</div>
+    <div class="marquee-item">Social Media Management</div>
+    <div class="marquee-item">Canva Graphic Design</div>
+    <div class="marquee-item">Email Management</div>
+    <div class="marquee-item">Data Entry</div>
+    <div class="marquee-item">Calendar & Scheduling</div>
+    <div class="marquee-item">Content Planning</div>
+    <div class="marquee-item">Community Management</div>
+    <div class="marquee-item">Research & Reports</div>
+    <div class="marquee-item">Basic Photo Editing</div>
+    <div class="marquee-item">Facebook · Instagram · TikTok</div>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section class="services">
+  <div class="sec-eyebrow">What I do</div>
+  <div class="sec-title">Services that <em>actually</em><br>move the needle</div>
+  <div class="sec-sub">I don't just complete tasks — I bring business thinking to everything I do. Four years in sales and marketing means I understand what your audience actually wants.</div>
+  <div class="services-grid">
+    <div class="svc-card" onclick="sendPrompt('Tell me more about social media management services')">
+      <span class="svc-icon">📱</span>
+      <div class="svc-title">Social Media Management</div>
+      <div class="svc-desc">Strategic content that builds your brand and drives real engagement — not just pretty posts.</div>
+      <div class="svc-items">
+        <span class="svc-item">Content Calendar</span>
+        <span class="svc-item">Captions & Hashtags</span>
+        <span class="svc-item">Scheduling</span>
+        <span class="svc-item">FB · IG · TikTok</span>
+        <span class="svc-item">Community Mgmt</span>
+      </div>
+    </div>
+    <div class="svc-card" onclick="sendPrompt('Tell me more about graphic design services using Canva')">
+      <span class="svc-icon">🎨</span>
+      <div class="svc-title">Graphic Design</div>
+      <div class="svc-desc">Eye-catching visuals that stop the scroll — branded, on-point, and delivered fast.</div>
+      <div class="svc-items">
+        <span class="svc-item">Social Posts</span>
+        <span class="svc-item">Carousels</span>
+        <span class="svc-item">Stories & Reels Covers</span>
+        <span class="svc-item">Flyers</span>
+        <span class="svc-item">Photo Editing</span>
+      </div>
+    </div>
+    <div class="svc-card" onclick="sendPrompt('Tell me more about virtual assistant and admin services')">
+      <span class="svc-icon">🗂️</span>
+      <div class="svc-title">Admin & VA Support</div>
+      <div class="svc-desc">The behind-the-scenes work that keeps your business running smoothly while you focus on the big picture.</div>
+      <div class="svc-items">
+        <span class="svc-item">Email Management</span>
+        <span class="svc-item">Calendar & Scheduling</span>
+        <span class="svc-item">Data Entry</span>
+        <span class="svc-item">Research</span>
+        <span class="svc-item">Google & MS Office</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about">
+  <div class="about-grid">
+    <div class="about-visual">
+      <div style="font-size:13px;font-weight:600;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:20px;">My journey so far</div>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-dot">1</div>
+          <div class="tl-content">
+            <div class="tl-year">2021 – Present</div>
+            <div class="tl-title">Freelance Brand Consultant</div>
+            <div class="tl-sub">SS Enertech · Brand development & marketing</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot">2</div>
+          <div class="tl-content">
+            <div class="tl-year">2023 – Present</div>
+            <div class="tl-title">Business Development Manager</div>
+            <div class="tl-sub">Endaya Corporation · Sales & Marketing</div>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot">3</div>
+          <div class="tl-content">
+            <div class="tl-year">2025 – Present</div>
+            <div class="tl-title">Freelance VA & SMM</div>
+            <div class="tl-sub">Serving clients remotely · EST timezone</div>
+          </div>
+        </div>
+        <div class="tl-item" style="padding-bottom:0;">
+          <div class="tl-dot" style="background:var(--green);">✓</div>
+          <div class="tl-content">
+            <div class="tl-year">Education</div>
+            <div class="tl-title">BS Business Administration</div>
+            <div class="tl-sub">Major in Management Accounting</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="about-text">
+      <div class="sec-eyebrow">About me</div>
+      <div class="sec-title" style="margin-bottom:16px;">Not your average <em>VA</em></div>
+      <p style="color:var(--muted);font-size:14px;line-height:1.8;margin-bottom:8px;">I have a business degree and 4+ years of real-world sales, marketing, and brand development experience. That means when I manage your social media, I'm not just posting — I'm thinking about your audience, your brand, and your goals.</p>
+      <p style="color:var(--muted);font-size:14px;line-height:1.8;">I work on a flexible schedule built around results, not clock-watching. You get someone who is proactive, communicative, and genuinely invested in your success.</p>
+      <div class="fun-facts">
+        <div class="fun-fact"><span class="ff-icon">⏰</span> Flexible hours — I deliver results, not timesheets</div>
+        <div class="fun-fact"><span class="ff-icon">🇺🇸</span> EST-aligned and responsive for US clients</div>
+        <div class="fun-fact"><span class="ff-icon">💬</span> Fluent English, clear communication always</div>
+        <div class="fun-fact"><span class="ff-icon">📈</span> Business brain behind every task I touch</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TOOLS -->
+<section class="tools">
+  <div class="sec-eyebrow">My toolkit</div>
+  <div class="sec-title">Tools I work <em>well</em> with</div>
+  <div class="sec-sub" style="margin-bottom:36px;">Proficient in everything you need — no learning curve, no hand-holding.</div>
+  <div class="tools-grid">
+    <div class="tool-card"><span class="tool-icon">🎨</span><div class="tool-name">Canva</div><div class="tool-level">Advanced</div><div class="tool-bar"><div class="tool-fill" style="width:90%"></div></div></div>
+    <div class="tool-card"><span class="tool-icon">📘</span><div class="tool-name">Facebook & Instagram</div><div class="tool-level">Advanced</div><div class="tool-bar"><div class="tool-fill" style="width:88%"></div></div></div>
+    <div class="tool-card"><span class="tool-icon">🎵</span><div class="tool-name">TikTok</div><div class="tool-level">Intermediate</div><div class="tool-bar"><div class="tool-fill" style="width:75%"></div></div></div>
+    <div class="tool-card"><span class="tool-icon">📊</span><div class="tool-name">Google Sheets</div><div class="tool-level">Advanced</div><div class="tool-bar"><div class="tool-fill" style="width:85%"></div></div></div>
+    <div class="tool-card"><span class="tool-icon">📧</span><div class="tool-name">Gmail & Google Workspace</div><div class="tool-level">Advanced</div><div class="tool-bar"><div class="tool-fill" style="width:90%"></div></div></div>
+    <div class="tool-card"><span class="tool-icon">📝</span><div class="tool-name">Microsoft Office</div><div class="tool-level">Advanced</div><div class="tool-bar"><div class="tool-fill" style="width:85%"></div></div></div>
+    <div class="tool-card"><span class="tool-icon">📅</span><div class="tool-name">Google Calendar</div><div class="tool-level">Advanced</div><div class="tool-bar"><div class="tool-fill" style="width:88%"></div></div></div>
+    <div class="tool-card"><span class="tool-icon">🔍</span><div class="tool-name">Online Research</div><div class="tool-level">Advanced</div><div class="tool-bar"><div class="tool-fill" style="width:92%"></div></div></div>
+  </div>
+</section>
+
+<!-- SAMPLE WORK -->
+<section class="work">
+  <div class="sec-eyebrow">Portfolio</div>
+  <div class="sec-title">Sample <em>work</em></div>
+  <div class="sec-sub" style="margin-bottom:36px;">Mock designs across different industries — this is the quality and style you can expect.</div>
+  <div class="work-grid">
+    <div class="work-card" onclick="sendPrompt('Help me create home staging social media content in Canva')">
+      <div class="work-thumb wt1"><div class="work-mock"><div class="wm-img"></div><div class="wm-l"></div><div class="wm-ls"></div></div><div class="work-label">Sample Design</div></div>
+      <div class="work-info"><div class="wi-title">Home Staging & Interior</div><div class="wi-type">Before/After · Room Reveals · Tips</div><div class="wi-tags"><span class="wi-tag">Facebook</span><span class="wi-tag">Instagram</span><span class="wi-tag">Canva</span></div></div>
+    </div>
+    <div class="work-card" onclick="sendPrompt('Help me create restaurant social media content in Canva')">
+      <div class="work-thumb wt2"><div class="work-mock"><div class="wm-img"></div><div class="wm-l"></div><div class="wm-ls"></div></div><div class="work-label">Sample Design</div></div>
+      <div class="work-info"><div class="wi-title">Food & Restaurant</div><div class="wi-type">Promos · Menu Posts · Reels Covers</div><div class="wi-tags"><span class="wi-tag">Instagram</span><span class="wi-tag">TikTok</span><span class="wi-tag">Canva</span></div></div>
+    </div>
+    <div class="work-card" onclick="sendPrompt('Help me create real estate social media content in Canva')">
+      <div class="work-thumb wt3"><div class="work-mock"><div class="wm-img"></div><div class="wm-l"></div><div class="wm-ls"></div></div><div class="work-label">Sample Design</div></div>
+      <div class="work-info"><div class="wi-title">Real Estate & Property</div><div class="wi-type">Listings · Market Tips · Branding</div><div class="wi-tags"><span class="wi-tag">Facebook</span><span class="wi-tag">Instagram</span><span class="wi-tag">Canva</span></div></div>
+    </div>
+    <div class="work-card" onclick="sendPrompt('Help me create wellness brand social media content in Canva')">
+      <div class="work-thumb wt4"><div class="work-mock"><div class="wm-img"></div><div class="wm-l"></div><div class="wm-ls"></div></div><div class="work-label">Sample Design</div></div>
+      <div class="work-info"><div class="wi-title">Wellness & Lifestyle</div><div class="wi-type">Quotes · Carousels · Educational</div><div class="wi-tags"><span class="wi-tag">Instagram</span><span class="wi-tag">TikTok</span><span class="wi-tag">Canva</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-section">
+  <div class="cta-title">Ready to take<br>work off your <em>plate?</em></div>
+  <div class="cta-sub">Let's talk about what you need and how I can help. No long contracts, no rigid hours — just reliable, quality work delivered on time.</div>
+  <div class="cta-cards">
+    <div class="cta-card" onclick="sendPrompt('I want to discuss VA services with Noreen')"><div class="cc-icon">✉️</div><div class="cc-label">Email</div><div class="cc-sub">ncabuena@gmail.com</div></div>
+    <div class="cta-card" onclick="sendPrompt('What is Noreen available for this month?')"><div class="cc-icon">💼</div><div class="cc-label">OnlineJobs.ph</div><div class="cc-sub">View my profile</div></div>
+    <div class="cta-card" onclick="sendPrompt('Download Noreen Cabuena resume')"><div class="cc-icon">📄</div><div class="cc-label">Resume</div><div class="cc-sub">Download PDF</div></div>
+  </div>
+  <button class="cta-btn" onclick="sendPrompt('Help me write a message to a new potential client for VA services')">Let's Work Together →</button>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-logo">Noreen Christie Cabuena</div>
+  <div class="foot-note">VA · SMM · Canva Design · Quezon City, PH · EST-friendly</div>
+</footer>
+
+</body>
+</html>
