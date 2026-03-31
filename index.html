@@ -3,1239 +3,1184 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Christie Creative — Creative Studio</title>
+<title>Christie Creative — Creative Studio, Philippines</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,600&family=DM+Sans:wght@300;400;500&display=swap');
-*{box-sizing:border-box;margin:0;padding:0;}
-:root{
-  --p:#F4F0E6;--deep:#1C2B1A;--sage:#7A9B7E;
-  --terra:#A85830;--mist:#EAE6DC;--ink:#2A2016;
-  --gold:#C8941A;--gold2:#E8B840;
-  --line:rgba(28,43,26,0.1);
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,600&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap');
+
+/* ── RESET & ROOT ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --cream: #F6F2EB;
+  --deep: #181C14;
+  --terra: #A85830;
+  --gold: #C8941A;
+  --gold2: #E8B840;
+  --sage: #6B8F71;
+  --mist: #EDE8DF;
+  --ink: #1E1A14;
+  --mid: #6B6050;
+  --faint: rgba(30,26,20,0.06);
+  --line: rgba(30,26,20,0.1);
 }
-html{scroll-behavior:smooth;}
-body{background:var(--p);color:var(--ink);font-family:'DM Sans',sans-serif;overflow-x:hidden;}
+html { scroll-behavior: smooth; font-size: 16px; }
+body {
+  background: var(--cream);
+  color: var(--ink);
+  font-family: 'DM Sans', sans-serif;
+  overflow-x: hidden;
+  cursor: none;
+}
 
-/* BLOOM CANVAS — fixed right half, scroll-reactive */
-#bloom-canvas{position:fixed;top:0;right:0;width:50vw;height:100vh;pointer-events:none;z-index:0;}
+/* ── CUSTOM CURSOR ── */
+#cursor {
+  position: fixed; z-index: 9999; pointer-events: none;
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--terra);
+  transform: translate(-50%, -50%);
+  transition: width 0.25s, height 0.25s, background 0.25s, opacity 0.25s;
+  mix-blend-mode: multiply;
+}
+#cursor-ring {
+  position: fixed; z-index: 9998; pointer-events: none;
+  width: 36px; height: 36px; border-radius: 50%;
+  border: 1px solid rgba(168,88,48,0.4);
+  transform: translate(-50%, -50%);
+  transition: width 0.4s cubic-bezier(0.23,1,0.32,1),
+              height 0.4s cubic-bezier(0.23,1,0.32,1),
+              border-color 0.3s, opacity 0.3s;
+}
+body:has(a:hover) #cursor,
+body:has(button:hover) #cursor { width: 6px; height: 6px; }
+body:has(a:hover) #cursor-ring,
+body:has(button:hover) #cursor-ring { width: 56px; height: 56px; border-color: var(--terra); }
 
-/* PROGRESS DOTS */
-.bp{position:fixed;right:20px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:7px;z-index:50;}
-.bpd{width:5px;height:5px;border-radius:50%;background:rgba(28,43,26,0.15);transition:all 0.4s;cursor:pointer;}
-.bpd.on{background:var(--terra);transform:scale(1.7);}
+/* ── CHRYSANTHEMUM BACKGROUND ── */
+#bg-canvas {
+  position: fixed; inset: 0; z-index: 0;
+  pointer-events: none; opacity: 0.045;
+  width: 100%; height: 100%;
+}
 
-/* NAV */
-nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 52px;height:58px;display:flex;justify-content:space-between;align-items:center;background:rgba(244,240,230,0);transition:background 0.4s,border-color 0.4s;border-bottom:1px solid transparent;}
-nav.scrolled{background:rgba(244,240,230,0.96);border-bottom-color:var(--line);}
-.nav-mark{display:flex;align-items:baseline;}
-.nm1{font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:500;color:var(--deep);}
-.ndot{width:5px;height:5px;border-radius:50%;background:var(--terra);margin:0 3px 4px;align-self:flex-end;animation:breathe 3s ease-in-out infinite;}
-@keyframes breathe{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.4;transform:scale(2);}}
-.nm2{font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:300;font-style:italic;color:var(--terra);}
-.nav-links{display:flex;gap:28px;align-items:center;}
-.nav-links a{font-size:13px;color:rgba(42,32,22,0.5);text-decoration:none;letter-spacing:0.03em;transition:color 0.2s;}
-.nav-links a:hover{color:var(--deep);}
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0 48px; height: 60px;
+  mix-blend-mode: multiply;
+}
+.nav-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px; font-weight: 500; color: var(--deep);
+  text-decoration: none; letter-spacing: 0.02em;
+  display: flex; align-items: baseline; gap: 0;
+}
+.nl1 { font-weight: 500; }
+.nl-sep { color: var(--terra); margin: 0 3px; opacity: 0.6; }
+.nl2 { font-weight: 300; font-style: italic; color: var(--terra); }
+.nav-right { display: flex; gap: 32px; align-items: center; }
+.nav-right a {
+  font-size: 12px; font-weight: 400; color: rgba(30,26,20,0.55);
+  text-decoration: none; letter-spacing: 0.08em; text-transform: uppercase;
+  position: relative; transition: color 0.25s;
+}
+.nav-right a::after {
+  content: ''; position: absolute; bottom: -2px; left: 0; right: 0;
+  height: 1px; background: var(--terra); transform: scaleX(0);
+  transform-origin: right; transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+}
+.nav-right a:hover { color: var(--ink); }
+.nav-right a:hover::after { transform: scaleX(1); transform-origin: left; }
 
-/* BUTTONS */
-.btn-grow{position:relative;overflow:hidden;background:var(--deep);color:var(--p);padding:9px 22px;border-radius:100px;font-size:12px;font-weight:500;letter-spacing:0.05em;border:none;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:color 0.3s;}
-.btn-grow::before{content:'';position:absolute;inset:0;background:var(--terra);clip-path:circle(0% at 50% 50%);transition:clip-path 0.5s cubic-bezier(0.4,0,0.2,1);}
-.btn-grow:hover::before{clip-path:circle(100% at 50% 50%);}
-.btn-grow span{position:relative;z-index:1;}
-.btn-seed{position:relative;overflow:hidden;background:transparent;color:var(--ink);padding:9px 22px;border-radius:100px;font-size:12px;font-weight:500;letter-spacing:0.05em;border:1px solid rgba(42,32,22,0.2);cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:border-color 0.3s,color 0.3s;}
-.btn-seed::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:0;height:1px;background:var(--terra);transition:width 0.4s cubic-bezier(0.4,0,0.2,1);}
-.btn-seed:hover{border-color:var(--terra);color:var(--terra);}
-.btn-seed:hover::after{width:80%;}
-.btn-seed span{position:relative;z-index:1;}
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  justify-content: flex-end;
+  padding: 0 48px 72px;
+  position: relative; z-index: 1;
+  border-bottom: 1px solid var(--line);
+}
+.hero-eyebrow {
+  font-size: 11px; font-weight: 400; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--terra);
+  margin-bottom: 24px;
+  opacity: 0; transform: translateY(12px);
+  animation: rise 0.8s 0.3s forwards;
+}
+.hero-h {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(52px, 8vw, 120px);
+  font-weight: 300; line-height: 0.95;
+  letter-spacing: -0.03em; color: var(--deep);
+  margin-bottom: 40px;
+  opacity: 0; transform: translateY(20px);
+  animation: rise 0.9s 0.45s forwards;
+}
+.hero-h em { font-style: italic; color: var(--terra); }
+.hero-h .line { display: block; }
+.hero-h .line.right { padding-left: 18%; }
+.hero-h .line.further { padding-left: 36%; }
+.hero-bottom {
+  display: flex; justify-content: space-between; align-items: flex-end;
+  opacity: 0; transform: translateY(12px);
+  animation: rise 0.8s 0.65s forwards;
+}
+.hero-desc {
+  font-size: 15px; font-weight: 300; color: var(--mid);
+  max-width: 360px; line-height: 1.8;
+}
+.hero-meta {
+  display: flex; flex-direction: column; align-items: flex-end; gap: 6px;
+}
+.hero-meta-item {
+  font-size: 11px; color: rgba(30,26,20,0.4);
+  letter-spacing: 0.1em; text-transform: uppercase;
+}
+.hero-available {
+  display: flex; align-items: center; gap: 7px;
+  font-size: 11px; font-weight: 500; color: var(--sage);
+  letter-spacing: 0.08em; text-transform: uppercase;
+}
+.avail-dot {
+  width: 6px; height: 6px; border-radius: 50%; background: var(--sage);
+  animation: breathe 2.5s ease-in-out infinite;
+}
+@keyframes breathe { 0%,100%{opacity:1;transform:scale(1);} 50%{opacity:0.4;transform:scale(1.8);} }
+@keyframes rise { to { opacity:1; transform:translateY(0); } }
 
-/* HERO */
-.hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;align-items:center;padding:80px 52px;position:relative;z-index:1;}
-.hero-kicker{display:flex;align-items:center;gap:12px;margin-bottom:28px;opacity:0;transform:translateY(16px);animation:sprout 0.7s 0.2s forwards;}
-.kl{width:32px;height:1px;background:var(--terra);}
-.kt{font-size:11px;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:var(--terra);}
-.hero-h{font-family:'Cormorant Garamond',serif;font-size:clamp(44px,6vw,80px);font-weight:300;line-height:1.0;letter-spacing:-0.025em;color:var(--deep);margin-bottom:24px;opacity:0;transform:translateY(20px);animation:sprout 0.7s 0.35s forwards;}
-.hero-h .bl{display:block;}
-.hero-h em{font-style:italic;color:var(--terra);}
-.hero-h .ind{padding-left:68px;}
-.hero-sub{font-size:15px;font-weight:300;color:rgba(42,32,22,0.58);max-width:380px;line-height:1.85;margin-bottom:40px;opacity:0;transform:translateY(16px);animation:sprout 0.7s 0.5s forwards;}
-.hero-actions{display:flex;align-items:center;gap:16px;opacity:0;transform:translateY(14px);animation:sprout 0.7s 0.65s forwards;}
-@keyframes sprout{to{opacity:1;transform:translateY(0);}}
-.scroll-hint{position:absolute;bottom:36px;left:52px;display:flex;align-items:center;gap:10px;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(42,32,22,0.3);opacity:0;animation:sprout 0.7s 1s forwards;}
-.scroll-bar{width:36px;height:1px;background:rgba(42,32,22,0.12);overflow:hidden;position:relative;}
-.scroll-bar::after{content:'';position:absolute;left:-100%;top:0;bottom:0;width:100%;background:var(--terra);animation:slide 2.2s ease-in-out infinite;}
-@keyframes slide{0%{left:-100%;}100%{left:100%;}}
+/* SCROLL INDICATOR */
+.scroll-ind {
+  position: absolute; bottom: 72px; right: 48px;
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  opacity: 0; animation: rise 0.8s 1s forwards;
+}
+.scroll-ind-line {
+  width: 1px; height: 48px; background: var(--line); position: relative; overflow: hidden;
+}
+.scroll-ind-line::after {
+  content: ''; position: absolute; top: -100%; left: 0; right: 0; height: 100%;
+  background: var(--terra); animation: drop 2s ease-in-out infinite;
+}
+@keyframes drop { 0%{top:-100%;} 100%{top:100%;} }
+.scroll-ind span {
+  font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: rgba(30,26,20,0.3); writing-mode: vertical-rl;
+}
 
-/* TICKER */
-.ticker{background:var(--deep);padding:12px 0;overflow:hidden;position:relative;z-index:1;}
-.ticker-track{display:flex;animation:tick 28s linear infinite;width:max-content;}
-@keyframes tick{from{transform:translateX(0);}to{transform:translateX(-50%);}}
-.ti{font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:300;font-style:italic;color:rgba(244,240,230,0.45);padding:0 28px;white-space:nowrap;display:flex;align-items:center;gap:14px;}
-.td{width:3px;height:3px;border-radius:50%;background:var(--terra);flex-shrink:0;}
+/* ── TICKER ── */
+.ticker-wrap {
+  overflow: hidden; border-bottom: 1px solid var(--line);
+  position: relative; z-index: 1;
+  padding: 14px 0; background: var(--deep);
+}
+.ticker-track {
+  display: flex; width: max-content;
+  animation: tick 30s linear infinite;
+}
+@keyframes tick { from{transform:translateX(0);} to{transform:translateX(-50%);} }
+.tick-item {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 14px; font-weight: 300; font-style: italic;
+  color: rgba(244,240,230,0.4); white-space: nowrap;
+  padding: 0 32px; display: flex; align-items: center; gap: 16px;
+}
+.tick-glyph { color: var(--terra); font-style: normal; font-size: 10px; }
 
-/* SECTIONS */
-.sec{padding:100px 52px;position:relative;z-index:1;border-top:1px solid var(--line);}
-.eyebrow{font-size:11px;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:var(--terra);margin-bottom:10px;}
-.sec-title{font-family:'Cormorant Garamond',serif;font-size:clamp(30px,4vw,48px);font-weight:300;color:var(--deep);letter-spacing:-0.01em;line-height:1.1;margin-bottom:48px;}
-.sec-title em{font-style:italic;color:var(--terra);}
+/* ── WORK SECTION ── */
+.work-section { position: relative; z-index: 1; }
+.work-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 56px 48px 36px;
+}
+.work-label {
+  font-size: 11px; font-weight: 400; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--terra);
+}
+.work-count {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 13px; color: rgba(30,26,20,0.3);
+  letter-spacing: 0.08em;
+}
 
-/* SERVICES */
-.svc-grid{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line);}
-.svc-card{padding:32px 26px;border-right:1px solid var(--line);position:relative;overflow:hidden;cursor:default;transition:background 0.3s;}
-.svc-card:last-child{border-right:none;}
-.svc-card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--terra);transform:scaleX(0);transform-origin:left;transition:transform 0.45s cubic-bezier(0.4,0,0.2,1);}
-.svc-card:hover::after{transform:scaleX(1);}
-.svc-card:hover{background:var(--mist);}
-.sc-num{font-family:'Cormorant Garamond',serif;font-size:11px;color:rgba(42,32,22,0.22);margin-bottom:18px;letter-spacing:0.1em;}
-.sc-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:500;color:var(--deep);margin-bottom:10px;}
-.sc-desc{font-size:13px;color:rgba(42,32,22,0.5);line-height:1.8;margin-bottom:16px;}
-.sc-tags{display:flex;flex-wrap:wrap;gap:5px;}
-.sc-tag{font-size:10px;color:rgba(42,32,22,0.38);border:1px solid var(--line);padding:3px 9px;border-radius:100px;}
+/* WORK ITEMS — full-bleed with cursor reveal */
+.work-list { border-top: 1px solid var(--line); }
+.work-item {
+  display: grid; grid-template-columns: 1fr 1fr;
+  border-bottom: 1px solid var(--line);
+  position: relative; overflow: hidden;
+  cursor: none;
+  transition: background 0.4s;
+  min-height: 220px;
+}
+.work-item:hover { background: var(--mist); }
+.work-item-left {
+  padding: 40px 48px;
+  display: flex; flex-direction: column; justify-content: space-between;
+  position: relative; z-index: 2;
+}
+.work-item-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 13px; color: rgba(30,26,20,0.25);
+  letter-spacing: 0.1em; margin-bottom: 20px;
+}
+.work-item-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(28px, 3vw, 44px);
+  font-weight: 300; color: var(--deep);
+  line-height: 1.1; letter-spacing: -0.02em;
+  transition: color 0.3s;
+}
+.work-item:hover .work-item-title { color: var(--terra); }
+.work-item-tags {
+  display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap;
+}
+.work-tag {
+  font-size: 10px; font-weight: 400; letter-spacing: 0.1em;
+  text-transform: uppercase; color: rgba(30,26,20,0.4);
+  border: 1px solid rgba(30,26,20,0.12);
+  padding: 4px 10px; border-radius: 100px;
+  transition: all 0.25s;
+}
+.work-item:hover .work-tag { border-color: rgba(168,88,48,0.3); color: var(--terra); }
+.work-item-right {
+  position: relative; overflow: hidden;
+}
+/* Image reveal on hover — slides in from right */
+.work-img-wrap {
+  position: absolute; inset: 0;
+  transform: translateX(100%);
+  transition: transform 0.55s cubic-bezier(0.4,0,0.2,1);
+}
+.work-item:hover .work-img-wrap { transform: translateX(0); }
+.work-img {
+  width: 100%; height: 100%; object-fit: cover;
+  display: none;
+}
+.work-img.loaded { display: block; }
+.work-img-placeholder {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: 12px;
+}
+.work-placeholder-bg {
+  position: absolute; inset: 0;
+}
+.wbg1 { background: linear-gradient(135deg, #2A3828 0%, #3D5238 100%); }
+.wbg2 { background: linear-gradient(135deg, #38280A 0%, #6B4A18 100%); }
+.wbg3 { background: linear-gradient(135deg, #1A1E30 0%, #2C3458 100%); }
+.wbg4 { background: linear-gradient(135deg, #2A1810 0%, #5C2E18 100%); }
+.work-img-label {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(36px,5vw,64px); font-weight: 300; font-style: italic;
+  color: rgba(244,240,230,0.08); position: relative; z-index: 1;
+  letter-spacing: -0.02em; pointer-events: none;
+}
+.upload-btn {
+  position: absolute; bottom: 16px; right: 16px; z-index: 3;
+  background: rgba(244,240,230,0.1); border: 1px solid rgba(244,240,230,0.2);
+  border-radius: 100px; padding: 6px 14px;
+  font-size: 10px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
+  color: rgba(244,240,230,0.5); cursor: pointer;
+  display: flex; align-items: center; gap: 6px;
+  transition: all 0.25s;
+}
+.work-item:hover .upload-btn { background: rgba(244,240,230,0.18); color: rgba(244,240,230,0.9); }
 
-/* PACKAGES */
-.pkg-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:48px;}
-.pkg{border:1px solid var(--line);border-radius:4px;padding:28px 22px;background:var(--p);transition:all 0.3s;position:relative;overflow:hidden;}
-.pkg::before{content:'';position:absolute;bottom:-100%;left:0;right:0;height:100%;background:var(--mist);transition:bottom 0.4s cubic-bezier(0.4,0,0.2,1);}
-.pkg:hover::before{bottom:0;}
-.pkg.star{background:var(--deep);border-color:var(--deep);}
-.pkg.star::before{background:rgba(255,255,255,0.05);}
-.pkg.star .pkg-name,.pkg.star .pkg-price{color:var(--p);}
-.pkg.star .pkg-tagline,.pkg.star .pkg-per{color:rgba(244,240,230,0.4);}
-.pkg.star .pkg-divider{background:rgba(244,240,230,0.1);}
-.pkg.star .pkg-feat{color:rgba(244,240,230,0.6);}
-.pkg.star .pkg-feat::before{color:var(--gold2);}
-.pkg-badge{font-size:9px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;padding:3px 9px;border-radius:100px;background:var(--terra);color:var(--p);display:inline-block;margin-bottom:14px;}
-.pkg-badge-plain{font-size:9px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;padding:3px 9px;border-radius:100px;background:rgba(28,43,26,0.08);color:rgba(42,32,22,0.45);display:inline-block;margin-bottom:14px;}
-.pkg-inner{position:relative;z-index:1;}
-.pkg-name{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:500;color:var(--deep);margin-bottom:3px;}
-.pkg-tagline{font-size:12px;color:rgba(42,32,22,0.4);margin-bottom:16px;}
-.pkg-price{font-family:'Cormorant Garamond',serif;font-size:38px;font-weight:300;color:var(--deep);line-height:1;margin-bottom:2px;}
-.pkg-per{font-size:12px;color:rgba(42,32,22,0.35);margin-bottom:16px;}
-.pkg-divider{height:1px;background:var(--line);margin-bottom:14px;}
-.pkg-feat{font-size:12px;color:rgba(42,32,22,0.6);padding:4px 0;display:flex;align-items:flex-start;gap:8px;line-height:1.5;}
-.pkg-feat::before{content:'--';color:var(--terra);font-size:11px;flex-shrink:0;margin-top:2px;}
+/* WORK ITEM ARROW */
+.work-arrow {
+  position: absolute; right: 32px; top: 50%; transform: translateY(-50%);
+  width: 44px; height: 44px; border-radius: 50%;
+  border: 1px solid var(--line);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; color: rgba(30,26,20,0.25);
+  transition: all 0.35s; z-index: 2;
+}
+.work-item:hover .work-arrow {
+  border-color: var(--terra); color: var(--terra);
+  transform: translateY(-50%) rotate(45deg);
+}
 
-/* WORK */
-.work-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);}
-.wk{background:var(--p);overflow:hidden;cursor:pointer;position:relative;}
-.wk-thumb{height:200px;overflow:hidden;position:relative;}
-.wk-inner{width:100%;height:100%;display:flex;align-items:center;justify-content:center;transition:transform 0.5s cubic-bezier(0.4,0,0.2,1);position:relative;}
-.wk:hover .wk-inner{transform:scale(1.04);}
-.wt1{background:#2A3828;}.wt2{background:#3A2818;}.wt3{background:#1E2838;}.wt4{background:#382018;}
-.wk-inner img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;display:none;}
-.wk-inner img.loaded{display:block;}
-.wk-ghost{font-family:'Cormorant Garamond',serif;font-size:clamp(26px,4vw,40px);font-weight:300;font-style:italic;color:rgba(244,240,230,0.1);pointer-events:none;position:relative;z-index:1;transition:opacity 0.3s;}
-.wk-chips{position:absolute;top:12px;left:12px;display:flex;gap:5px;z-index:2;transition:opacity 0.3s;}
-.wk-chip{font-size:9px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,240,230,0.45);border:1px solid rgba(244,240,230,0.12);padding:3px 9px;border-radius:100px;}
-.wk-upload{position:absolute;bottom:12px;right:12px;background:rgba(244,240,230,0.08);border:1px solid rgba(244,240,230,0.15);border-radius:100px;padding:5px 12px;font-size:9px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:rgba(244,240,230,0.4);display:flex;align-items:center;gap:5px;z-index:2;transition:all 0.25s;}
-.wk:hover .wk-upload{background:rgba(244,240,230,0.18);color:rgba(244,240,230,0.8);}
-.wk-body{padding:16px 18px;}
-.wk-etitle{background:transparent;border:none;border-bottom:1px solid transparent;font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:400;color:var(--deep);width:100%;outline:none;padding:2px 0;transition:border-color 0.2s;cursor:text;}
-.wk-etitle:focus{border-bottom-color:var(--terra);}
-.wk-emeta{background:transparent;border:none;font-size:12px;color:rgba(42,32,22,0.4);width:100%;outline:none;padding:2px 0;margin-top:3px;cursor:text;font-family:'DM Sans',sans-serif;}
-#file-input{display:none;}
+/* EDITABLE TITLE/META */
+.work-edit-title {
+  background: transparent; border: none; outline: none;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(28px, 3vw, 44px); font-weight: 300;
+  color: var(--deep); letter-spacing: -0.02em; line-height: 1.1;
+  width: 100%; cursor: text;
+  transition: color 0.3s;
+}
+.work-item:hover .work-edit-title { color: var(--terra); }
+.work-edit-meta {
+  background: transparent; border: none; outline: none;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px; font-weight: 300; color: var(--mid);
+  width: 100%; cursor: text; margin-top: 8px;
+}
+#file-input { display: none; }
 
-/* PROCESS */
-.proc-dark{background:var(--deep);padding:100px 52px;position:relative;z-index:1;border-top:1px solid rgba(244,240,230,0.06);}
-.proc-eyebrow{font-size:11px;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:rgba(244,240,230,0.3);margin-bottom:10px;}
-.proc-title{font-family:'Cormorant Garamond',serif;font-size:clamp(30px,4vw,48px);font-weight:300;color:var(--p);letter-spacing:-0.01em;margin-bottom:60px;line-height:1.15;}
-.proc-title em{font-style:italic;color:var(--gold2);}
-.proc-grid{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid rgba(244,240,230,0.07);}
-.ps{padding:28px 22px;border-right:1px solid rgba(244,240,230,0.07);transition:background 0.3s;}
-.ps:last-child{border-right:none;}
-.ps:hover{background:rgba(244,240,230,0.04);}
-.ps-n{font-family:'Cormorant Garamond',serif;font-size:48px;font-weight:300;color:rgba(244,240,230,0.06);line-height:1;margin-bottom:16px;}
-.ps-t{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:400;color:var(--p);margin-bottom:7px;}
-.ps-d{font-size:12.5px;color:rgba(244,240,230,0.36);line-height:1.8;}
+/* ── ABOUT STRIP ── */
+.about-strip {
+  display: grid; grid-template-columns: 1fr 1fr;
+  border-top: 1px solid var(--line);
+  position: relative; z-index: 1;
+}
+.about-left {
+  padding: 80px 48px; border-right: 1px solid var(--line);
+}
+.about-eyebrow {
+  font-size: 11px; font-weight: 400; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--terra); margin-bottom: 20px;
+}
+.about-h {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(32px, 4vw, 52px); font-weight: 300;
+  color: var(--deep); line-height: 1.1; letter-spacing: -0.02em;
+  margin-bottom: 24px;
+}
+.about-h em { font-style: italic; color: var(--terra); }
+.about-body {
+  font-size: 14px; font-weight: 300; color: var(--mid);
+  line-height: 1.9; max-width: 420px;
+}
+.about-right {
+  padding: 80px 48px;
+  display: flex; flex-direction: column; justify-content: space-between;
+}
+.timeline { display: flex; flex-direction: column; gap: 0; }
+.tl {
+  display: flex; gap: 20px;
+  padding: 20px 0; border-bottom: 1px solid var(--faint);
+  transition: padding-left 0.25s;
+}
+.tl:hover { padding-left: 8px; }
+.tl:last-child { border-bottom: none; }
+.tl-year {
+  font-size: 11px; color: var(--terra); font-weight: 400;
+  letter-spacing: 0.08em; min-width: 80px; padding-top: 2px;
+}
+.tl-content {}
+.tl-title { font-size: 14px; font-weight: 500; color: var(--deep); margin-bottom: 3px; }
+.tl-sub { font-size: 12px; color: var(--mid); }
+.about-cred {
+  margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--faint);
+  font-size: 12px; color: rgba(30,26,20,0.35);
+  display: flex; flex-direction: column; gap: 6px;
+}
+.about-cred span { letter-spacing: 0.05em; }
 
-/* ABOUT */
-.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;}
-.about-title{font-family:'Cormorant Garamond',serif;font-size:clamp(28px,3.5vw,42px);font-weight:300;color:var(--deep);letter-spacing:-0.01em;margin-bottom:16px;line-height:1.15;}
-.about-title em{font-style:italic;color:var(--terra);}
-.about-body{font-size:14px;font-weight:300;color:rgba(42,32,22,0.58);line-height:1.9;margin-bottom:24px;}
-.af{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid rgba(28,43,26,0.05);transition:padding-left 0.25s;cursor:default;}
-.af:hover{padding-left:8px;}
-.af-icon{width:30px;height:30px;border-radius:50%;background:rgba(168,88,48,0.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.af-text{font-size:13px;color:rgba(42,32,22,0.58);line-height:1.5;}
-.af-text strong{color:var(--deep);font-weight:500;}
-.tl-item{display:flex;gap:14px;padding-bottom:24px;position:relative;}
-.tl-item:not(:last-child)::after{content:'';position:absolute;left:13px;top:28px;bottom:0;width:1px;background:var(--line);}
-.tl-dot{width:28px;height:28px;border-radius:50%;background:var(--terra);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;color:var(--p);flex-shrink:0;border:2px solid var(--mist);box-shadow:0 0 0 2px var(--terra);}
-.tl-dot.g{background:var(--deep);box-shadow:0 0 0 2px var(--deep);}
-.tl-year{font-size:11px;color:var(--terra);font-weight:500;margin-bottom:2px;}
-.tl-title{font-size:13px;font-weight:500;color:var(--deep);margin-bottom:2px;}
-.tl-sub{font-size:12px;color:rgba(42,32,22,0.4);}
+/* ── SERVICES ── */
+.services-section {
+  background: var(--deep); position: relative; z-index: 1;
+  border-top: 1px solid rgba(244,240,230,0.06);
+}
+.services-header {
+  padding: 72px 48px 0;
+  display: flex; justify-content: space-between; align-items: flex-end;
+}
+.svc-eyebrow {
+  font-size: 11px; font-weight: 400; letter-spacing: 0.22em;
+  text-transform: uppercase; color: rgba(244,240,230,0.3);
+  margin-bottom: 16px;
+}
+.svc-h {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(36px, 4vw, 56px); font-weight: 300;
+  color: #F6F2EB; line-height: 1.1; letter-spacing: -0.02em;
+}
+.svc-h em { font-style: italic; color: var(--gold2); }
+.svc-note {
+  font-size: 13px; font-weight: 300;
+  color: rgba(244,240,230,0.35);
+  max-width: 220px; text-align: right; line-height: 1.7;
+}
+.svc-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  border-top: 1px solid rgba(244,240,230,0.07); margin-top: 48px;
+}
+.svc-card {
+  padding: 36px 32px; border-right: 1px solid rgba(244,240,230,0.07);
+  position: relative; overflow: hidden; transition: background 0.3s;
+}
+.svc-card:last-child { border-right: none; }
+.svc-card::after {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: var(--terra); transform: scaleX(0); transform-origin: left;
+  transition: transform 0.45s cubic-bezier(0.4,0,0.2,1);
+}
+.svc-card:hover::after { transform: scaleX(1); }
+.svc-card:hover { background: rgba(244,240,230,0.03); }
+.svc-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 11px; color: rgba(244,240,230,0.18);
+  margin-bottom: 24px; letter-spacing: 0.1em;
+}
+.svc-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px; font-weight: 400; color: #F6F2EB;
+  margin-bottom: 12px; line-height: 1.2;
+}
+.svc-desc {
+  font-size: 13px; font-weight: 300; color: rgba(244,240,230,0.4);
+  line-height: 1.85; margin-bottom: 20px;
+}
+.svc-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.svc-tag {
+  font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase;
+  color: rgba(244,240,230,0.28);
+  border: 1px solid rgba(244,240,230,0.1);
+  padding: 4px 10px; border-radius: 100px;
+  transition: all 0.25s;
+}
+.svc-card:hover .svc-tag { border-color: rgba(200,148,26,0.4); color: var(--gold2); }
 
-/* CONTACT */
-.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;}
-.ct-title{font-family:'Cormorant Garamond',serif;font-size:clamp(34px,4vw,52px);font-weight:300;color:var(--deep);letter-spacing:-0.02em;margin-bottom:16px;line-height:1.1;}
-.ct-title em{font-style:italic;color:var(--terra);}
-.ct-body{font-size:14px;font-weight:300;color:rgba(42,32,22,0.5);line-height:1.9;margin-bottom:28px;}
-.ct-link{display:flex;align-items:center;gap:12px;font-size:13px;color:rgba(42,32,22,0.45);text-decoration:none;padding:11px 0;border-bottom:1px solid rgba(28,43,26,0.05);transition:all 0.2s;}
-.ct-link:hover{color:var(--deep);padding-left:6px;}
-.ct-icon{width:30px;height:30px;border-radius:50%;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:12px;transition:all 0.2s;flex-shrink:0;}
-.ct-link:hover .ct-icon{background:var(--deep);border-color:var(--deep);}
-.ct-form{background:var(--mist);border:1px solid var(--line);border-radius:4px;padding:32px 28px;}
-.fl{display:block;font-size:10px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:rgba(42,32,22,0.36);margin-bottom:7px;}
-.fi{width:100%;background:var(--p);border:1px solid var(--line);border-radius:3px;padding:11px 13px;font-size:13px;font-family:'DM Sans',sans-serif;color:var(--deep);outline:none;transition:border-color 0.2s;margin-bottom:14px;}
-.fi:focus{border-color:rgba(42,32,22,0.3);}
-.fi::placeholder{color:rgba(42,32,22,0.22);}
-.f2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-.fa{min-height:80px;resize:vertical;}
-.btn-submit{width:100%;background:var(--deep);color:var(--p);border:none;border-radius:100px;padding:13px;font-size:13px;font-weight:500;letter-spacing:0.06em;cursor:pointer;font-family:'DM Sans',sans-serif;position:relative;overflow:hidden;margin-top:4px;}
-.btn-submit::before{content:'';position:absolute;inset:0;background:var(--terra);clip-path:circle(0% at 50% 100%);transition:clip-path 0.6s cubic-bezier(0.4,0,0.2,1);}
-.btn-submit:hover::before{clip-path:circle(150% at 50% 100%);}
-.btn-submit span{position:relative;z-index:1;}
+/* ── PACKAGES ── */
+.pkg-section { padding: 72px 48px; background: var(--deep); border-top: 1px solid rgba(244,240,230,0.07); }
+.pkg-eyebrow {
+  font-size: 11px; font-weight: 400; letter-spacing: 0.22em;
+  text-transform: uppercase; color: rgba(244,240,230,0.3); margin-bottom: 40px;
+}
+.pkg-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.pkg {
+  border: 1px solid rgba(244,240,230,0.08);
+  border-radius: 3px; padding: 32px 28px;
+  position: relative; overflow: hidden;
+  transition: border-color 0.3s, transform 0.3s;
+}
+.pkg::before {
+  content: ''; position: absolute; inset: 0;
+  background: rgba(244,240,230,0.03);
+  transform: translateY(100%);
+  transition: transform 0.45s cubic-bezier(0.4,0,0.2,1);
+}
+.pkg:hover::before { transform: translateY(0); }
+.pkg:hover { border-color: rgba(244,240,230,0.18); }
+.pkg.featured { border-color: rgba(200,148,26,0.4); }
+.pkg.featured::after {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: var(--gold);
+}
+.pkg-inner { position: relative; z-index: 1; }
+.pkg-badge {
+  font-size: 9px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase;
+  padding: 3px 10px; border-radius: 100px;
+  display: inline-block; margin-bottom: 16px;
+}
+.pkg-badge.b-plain { background: rgba(244,240,230,0.06); color: rgba(244,240,230,0.4); }
+.pkg-badge.b-feature { background: rgba(200,148,26,0.2); color: var(--gold2); }
+.pkg-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 24px; font-weight: 400; color: #F6F2EB;
+  margin-bottom: 4px;
+}
+.pkg-sub { font-size: 12px; color: rgba(244,240,230,0.35); margin-bottom: 20px; }
+.pkg-price {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 42px; font-weight: 300; color: #F6F2EB;
+  line-height: 1; margin-bottom: 4px;
+}
+.pkg-period { font-size: 12px; color: rgba(244,240,230,0.3); margin-bottom: 20px; }
+.pkg-div { height: 1px; background: rgba(244,240,230,0.07); margin-bottom: 16px; }
+.pkg-feat {
+  font-size: 12px; color: rgba(244,240,230,0.5); padding: 5px 0;
+  display: flex; align-items: flex-start; gap: 10px; line-height: 1.5;
+}
+.pkg-feat::before { content: '—'; color: var(--gold); font-size: 10px; flex-shrink: 0; margin-top: 3px; }
 
-/* FOOTER */
-footer{border-top:1px solid var(--line);padding:22px 52px;display:flex;justify-content:space-between;align-items:center;position:relative;z-index:1;}
-.fm{display:flex;align-items:baseline;}
-.fm1{font-family:'Cormorant Garamond',serif;font-size:14px;font-weight:500;color:rgba(42,32,22,0.35);}
-.fmsep{font-family:'Cormorant Garamond',serif;font-size:14px;color:rgba(168,88,48,0.35);margin:0 4px;}
-.fm2{font-family:'Cormorant Garamond',serif;font-size:14px;font-weight:300;font-style:italic;color:rgba(168,88,48,0.45);}
-.flinks{display:flex;gap:20px;}
-.flinks a{font-size:12px;color:rgba(42,32,22,0.28);text-decoration:none;letter-spacing:0.04em;transition:color 0.2s;}
-.flinks a:hover{color:var(--deep);}
-.fcopy{font-size:11px;color:rgba(42,32,22,0.22);}
+/* ── CONTACT ── */
+.contact-section {
+  display: grid; grid-template-columns: 1fr 1fr;
+  border-top: 1px solid var(--line);
+  position: relative; z-index: 1; min-height: 80vh;
+}
+.contact-left {
+  padding: 80px 48px;
+  display: flex; flex-direction: column; justify-content: space-between;
+  border-right: 1px solid var(--line);
+}
+.contact-eyebrow {
+  font-size: 11px; font-weight: 400; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--terra); margin-bottom: 20px;
+}
+.contact-h {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(44px, 5.5vw, 80px);
+  font-weight: 300; color: var(--deep); line-height: 0.95;
+  letter-spacing: -0.03em;
+}
+.contact-h em { font-style: italic; color: var(--terra); }
+.contact-links { display: flex; flex-direction: column; gap: 0; }
+.contact-link {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 20px 0; border-bottom: 1px solid var(--faint);
+  text-decoration: none; color: var(--ink);
+  font-size: 14px; font-weight: 300;
+  transition: all 0.25s; position: relative; overflow: hidden;
+}
+.contact-link::before {
+  content: ''; position: absolute; left: -100%; top: 0; bottom: 0;
+  width: 3px; background: var(--terra);
+  transition: left 0.3s cubic-bezier(0.4,0,0.2,1);
+}
+.contact-link:hover { padding-left: 16px; color: var(--terra); }
+.contact-link:hover::before { left: 0; }
+.contact-link-arrow { font-size: 18px; opacity: 0.3; transition: opacity 0.25s, transform 0.25s; }
+.contact-link:hover .contact-link-arrow { opacity: 1; transform: translate(3px, -3px); }
+
+.contact-right { padding: 80px 48px; }
+.form-label {
+  display: block; font-size: 10px; font-weight: 400; letter-spacing: 0.18em;
+  text-transform: uppercase; color: rgba(30,26,20,0.4); margin-bottom: 8px;
+}
+.form-input {
+  width: 100%; background: transparent; border: none; border-bottom: 1px solid var(--line);
+  padding: 10px 0 12px; font-size: 14px; font-weight: 300;
+  font-family: 'DM Sans', sans-serif; color: var(--ink); outline: none;
+  margin-bottom: 28px; transition: border-color 0.25s;
+  border-radius: 0;
+}
+.form-input:focus { border-bottom-color: var(--terra); }
+.form-input::placeholder { color: rgba(30,26,20,0.25); }
+.form-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.form-textarea { min-height: 80px; resize: none; }
+.form-select { appearance: none; -webkit-appearance: none; cursor: pointer; }
+
+/* SUBMIT BUTTON — the hero of interactive buttons */
+.btn-submit-wrap { position: relative; margin-top: 8px; }
+.btn-submit {
+  width: 100%; padding: 16px 32px;
+  background: var(--deep); color: var(--cream);
+  border: 1px solid var(--deep); border-radius: 0;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase;
+  cursor: pointer; position: relative; overflow: hidden;
+  transition: color 0.35s;
+}
+.btn-submit::before {
+  content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+  background: var(--terra);
+  transition: left 0.45s cubic-bezier(0.4,0,0.2,1);
+}
+.btn-submit:hover::before { left: 0; }
+.btn-submit span { position: relative; z-index: 1; }
+
+/* ── PROCESS ── */
+.process-section {
+  padding: 0 48px 80px; background: var(--deep);
+  border-top: 1px solid rgba(244,240,230,0.07);
+  position: relative; z-index: 1;
+}
+.proc-header { padding: 72px 0 48px; }
+.proc-eyebrow {
+  font-size: 11px; font-weight: 400; letter-spacing: 0.22em;
+  text-transform: uppercase; color: rgba(244,240,230,0.3); margin-bottom: 16px;
+}
+.proc-h {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(32px, 4vw, 52px); font-weight: 300;
+  color: #F6F2EB; line-height: 1.1; letter-spacing: -0.02em;
+}
+.proc-h em { font-style: italic; color: var(--gold2); }
+.proc-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border: 1px solid rgba(244,240,230,0.07); }
+.proc-step {
+  padding: 32px 24px; border-right: 1px solid rgba(244,240,230,0.07);
+  transition: background 0.3s;
+}
+.proc-step:last-child { border-right: none; }
+.proc-step:hover { background: rgba(244,240,230,0.04); }
+.proc-n {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 52px; font-weight: 300;
+  color: rgba(244,240,230,0.05); line-height: 1; margin-bottom: 16px;
+}
+.proc-t { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 400; color: #F6F2EB; margin-bottom: 8px; }
+.proc-d { font-size: 12.5px; color: rgba(244,240,230,0.35); line-height: 1.8; }
+
+/* ── FOOTER ── */
+footer {
+  padding: 28px 48px;
+  display: flex; justify-content: space-between; align-items: center;
+  border-top: 1px solid var(--line);
+  position: relative; z-index: 1;
+}
+.foot-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 16px; color: rgba(30,26,20,0.4); text-decoration: none;
+  display: flex; align-items: baseline;
+}
+.fl1 { font-weight: 500; }
+.fl-sep { color: var(--terra); margin: 0 4px; opacity: 0.5; }
+.fl2 { font-weight: 300; font-style: italic; color: rgba(168,88,48,0.5); }
+.foot-links { display: flex; gap: 24px; }
+.foot-links a {
+  font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: rgba(30,26,20,0.3); text-decoration: none; transition: color 0.2s;
+}
+.foot-links a:hover { color: var(--terra); }
+.foot-copy { font-size: 11px; color: rgba(30,26,20,0.22); }
 
 /* REVEAL */
-.reveal{opacity:0;transform:translateY(24px);transition:opacity 0.7s cubic-bezier(0.4,0,0.2,1),transform 0.7s cubic-bezier(0.4,0,0.2,1);}
-.reveal.visible{opacity:1;transform:translateY(0);}
+.reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.8s cubic-bezier(0.4,0,0.2,1), transform 0.8s cubic-bezier(0.4,0,0.2,1); }
+.reveal.in { opacity: 1; transform: translateY(0); }
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
 
-@media(max-width:760px){
+@media(max-width:800px){
   nav{padding:0 20px;}
-  .nav-links a:not(.btn-grow){display:none;}
-  .hero{grid-template-columns:1fr;padding:80px 20px 60px;min-height:auto;}
-  .about-grid,.contact-grid{grid-template-columns:1fr;gap:40px;}
-  .sec{padding:60px 20px;}
-  .proc-dark{padding:60px 20px;}
-  .svc-grid,.pkg-grid,.proc-grid,.work-grid{grid-template-columns:1fr;}
-  footer{padding:16px 20px;flex-direction:column;gap:12px;text-align:center;}
-  #bloom-canvas{display:none;}
-  .bp{display:none;}
+  .nav-right a:not(:last-child){display:none;}
+  .hero,.about-left,.about-right,.contact-left,.contact-right{padding:48px 20px;}
+  .work-header,.services-header,.pkg-section,.process-section,footer{padding-left:20px;padding-right:20px;}
+  .hero-h{font-size:clamp(44px,10vw,80px);}
+  .hero-h .line.right{padding-left:10%;}
+  .hero-h .line.further{padding-left:20%;}
+  .work-item{grid-template-columns:1fr;}
+  .work-item-right{height:180px;}
+  .about-strip{grid-template-columns:1fr;}
+  .about-left{border-right:none;border-bottom:1px solid var(--line);}
+  .svc-grid,.pkg-grid,.proc-steps{grid-template-columns:1fr;}
+  .svc-card{border-right:none;border-bottom:1px solid rgba(244,240,230,0.07);}
+  .svc-card:last-child{border-bottom:none;}
+  .contact-section{grid-template-columns:1fr;}
+  .contact-left{border-right:none;border-bottom:1px solid var(--line);}
+  footer{flex-direction:column;gap:16px;text-align:center;padding:20px;}
+  #bg-canvas,.scroll-ind{display:none;}
 }
 </style>
 </head>
 <body>
 
-<canvas id="bloom-canvas"></canvas>
-<div class="bp" id="bp"></div>
+<!-- CUSTOM CURSOR -->
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
 
+<!-- AMBIENT CHRYSANTHEMUM BACKGROUND -->
+<canvas id="bg-canvas"></canvas>
+
+<!-- NAV -->
 <nav id="nav">
-  <div class="nav-mark">
-    <span class="nm1">Christie</span><div class="ndot"></div><span class="nm2">Creative</span>
-  </div>
-  <div class="nav-links">
+  <a href="#home" class="nav-logo"><span class="nl1">Christie</span><span class="nl-sep">·</span><span class="nl2">Creative</span></a>
+  <div class="nav-right">
     <a href="#work">Work</a>
-    <a href="#services">Services</a>
     <a href="#about">About</a>
-    <a href="#contact" class="btn-grow"><span>Start a project</span></a>
+    <a href="#services">Services</a>
+    <a href="#contact">Contact</a>
   </div>
 </nav>
 
-<section id="home" style="position:relative;z-index:1;">
+<!-- HERO -->
+<section id="home">
 <div class="hero">
   <div>
-    <div class="hero-kicker"><div class="kl"></div><span class="kt">Creative Studio &middot; Philippines</span></div>
+    <p class="hero-eyebrow">Creative Studio &nbsp;·&nbsp; Philippines &nbsp;·&nbsp; Est. 2025</p>
     <h1 class="hero-h">
-      <span class="bl">We make your</span>
-      <span class="bl ind"><em>brand</em> the</span>
-      <span class="bl">reason they</span>
-      <span class="bl"><em>trust you.</em></span>
+      <span class="line">We make your</span>
+      <span class="line right"><em>brand</em> the reason</span>
+      <span class="line further">they <em>trust you.</em></span>
     </h1>
-    <p class="hero-sub">Social media, design, and content &mdash; tended with care so your audience chooses you before they even meet you.</p>
-    <div class="hero-actions">
-      <a href="#work" class="btn-grow"><span>See our work &rarr;</span></a>
-      <a href="#services" class="btn-seed"><span>What we offer</span></a>
+  </div>
+  <div class="hero-bottom">
+    <p class="hero-desc">Social media management, graphic design, and virtual assistance — tended with care so your audience chooses you before they even meet you.</p>
+    <div class="hero-meta">
+      <div class="hero-available"><div class="avail-dot"></div>Open to new projects</div>
+      <div class="hero-meta-item">EST &amp; CET aligned</div>
+      <div class="hero-meta-item">ncabuena@gmail.com</div>
     </div>
   </div>
+  <div class="scroll-ind">
+    <div class="scroll-ind-line"></div>
+    <span>Scroll</span>
+  </div>
 </div>
-<div class="scroll-hint"><div class="scroll-bar"></div>scroll to bloom</div>
 </section>
 
-<div class="ticker" style="position:relative;z-index:1;">
+<!-- TICKER -->
+<div class="ticker-wrap">
   <div class="ticker-track">
-    <span class="ti"><span class="td"></span>Social Media</span>
-    <span class="ti"><span class="td"></span>Canva Design</span>
-    <span class="ti"><span class="td"></span>Content Writing</span>
-    <span class="ti"><span class="td"></span>Virtual Assistance</span>
-    <span class="ti"><span class="td"></span>Brand Identity</span>
-    <span class="ti"><span class="td"></span>Video &amp; Reels</span>
-    <span class="ti"><span class="td"></span>Community Mgmt</span>
-    <span class="ti"><span class="td"></span>Admin &amp; Ops</span>
-    <span class="ti"><span class="td"></span>Social Media</span>
-    <span class="ti"><span class="td"></span>Canva Design</span>
-    <span class="ti"><span class="td"></span>Content Writing</span>
-    <span class="ti"><span class="td"></span>Virtual Assistance</span>
-    <span class="ti"><span class="td"></span>Brand Identity</span>
-    <span class="ti"><span class="td"></span>Video &amp; Reels</span>
-    <span class="ti"><span class="td"></span>Community Mgmt</span>
-    <span class="ti"><span class="td"></span>Admin &amp; Ops</span>
+    <span class="tick-item"><span class="tick-glyph">✦</span>Social Media Management</span>
+    <span class="tick-item"><span class="tick-glyph">✦</span>Canva Graphic Design</span>
+    <span class="tick-item"><span class="tick-glyph">✦</span>Content Writing</span>
+    <span class="tick-item"><span class="tick-glyph">✦</span>Virtual Assistance</span>
+    <span class="tick-item"><span class="tick-glyph">✦</span>Brand Identity</span>
+    <span class="tick-item"><span class="tick-glyph">✦</span>Video &amp; Reels</span>
+    <span class="tick-item"><span class="tick-glyph">✦</span>Community Management</span>
+    <span class="tick-item"><span class="tick-glyph">✦</span>Admin &amp; Operations</span>
+    <span class="tick-item"><span class="tick-glyph">✦</span>Social Media Management</span>
+    <span class="tick-item"><span class="tick-glyph">✦</span>Canva Graphic Design</span>
+    <span class="tick-item"><span class="tick-glyph">✦</span>Content Writing</span>
+    <span class="tick-item"><span class="tick-glyph">✦</span>Virtual Assistance</span>
+    <span class="tick-item"><span class="tick-glyph">✦</span>Brand Identity</span>
+    <span class="tick-item"><span class="tick-glyph">✦</span>Video &amp; Reels</span>
+    <span class="tick-item"><span class="tick-glyph">✦</span>Community Management</span>
+    <span class="tick-item"><span class="tick-glyph">✦</span>Admin &amp; Operations</span>
   </div>
 </div>
 
-<div class="sec reveal" id="statement" style="border-top:1px solid var(--line);">
-  <div style="display:grid;grid-template-columns:200px 1fr;gap:60px;align-items:center;">
-    <div style="font-family:'Cormorant Garamond',serif;font-size:11px;color:rgba(42,32,22,0.28);letter-spacing:0.18em;text-transform:uppercase;line-height:2.2;">Christie &middot; Creative<br>Est. 2025<br>Quezon City, PH<br>&mdash;&mdash;<br>Trust-first<br>studio</div>
-    <div>
-      <div style="font-family:'Cormorant Garamond',serif;font-size:clamp(24px,3.5vw,40px);font-weight:300;color:var(--deep);line-height:1.3;letter-spacing:-0.01em;">&ldquo;We tend to your brand the way a gardener tends a garden &mdash; with <em style="font-style:italic;color:var(--terra);">patience, intention,</em> and the quiet confidence that good work grows into something your audience <em style="font-style:italic;color:var(--terra);">cannot ignore.</em>&rdquo;</div>
-      <div style="margin-top:18px;font-size:13px;color:rgba(42,32,22,0.32);letter-spacing:0.04em;display:flex;align-items:center;gap:10px;"><span style="display:inline-block;width:24px;height:1px;background:var(--line);"></span>Christie Creative &middot; Studio Philosophy</div>
-    </div>
-  </div>
-</div>
-
-<section id="services">
-<div class="sec reveal">
-  <div class="eyebrow">What we do</div>
-  <div class="sec-title">Services that <em>actually grow</em> brands</div>
-  <div class="svc-grid">
-    <div class="svc-card"><div class="sc-num">01 &mdash;&mdash;</div><div class="sc-title">Social Media Management</div><div class="sc-desc">Content calendars, captions with real hooks, scheduling, and community management that builds genuine loyalty &mdash; not just metrics.</div><div class="sc-tags"><span class="sc-tag">Facebook</span><span class="sc-tag">Instagram</span><span class="sc-tag">TikTok</span><span class="sc-tag">Scheduling</span></div></div>
-    <div class="svc-card"><div class="sc-num">02 &mdash;&mdash;</div><div class="sc-title">Graphic Design &amp; Branding</div><div class="sc-desc">Visual identity, Canva templates, social graphics, and brand systems that look intentional across every touchpoint.</div><div class="sc-tags"><span class="sc-tag">Canva</span><span class="sc-tag">Social posts</span><span class="sc-tag">Brand identity</span><span class="sc-tag">Logo</span></div></div>
-    <div class="svc-card"><div class="sc-num">03 &mdash;&mdash;</div><div class="sc-title">Virtual Assistance &amp; Admin</div><div class="sc-desc">Email management, research, scheduling, data entry, and content writing &mdash; the backbone that keeps your business moving.</div><div class="sc-tags"><span class="sc-tag">Email</span><span class="sc-tag">Calendar</span><span class="sc-tag">Research</span><span class="sc-tag">Copywriting</span></div></div>
-  </div>
-  <div class="pkg-grid">
-    <div class="pkg"><div class="pkg-inner"><div class="pkg-badge-plain">Starter</div><div class="pkg-name">The Seedling</div><div class="pkg-tagline">For brands just getting started</div><div class="pkg-price">$200</div><div class="pkg-per">per month &middot; 3 month minimum</div><div class="pkg-divider"></div><div class="pkg-feat">2 platforms (FB + IG)</div><div class="pkg-feat">10 posts per month</div><div class="pkg-feat">Captions + hashtags</div><div class="pkg-feat">Basic Canva graphics</div><div class="pkg-feat">Monthly report</div></div></div>
-    <div class="pkg star"><div class="pkg-inner"><div class="pkg-badge">Most popular</div><div class="pkg-name">The Garden</div><div class="pkg-tagline">For brands ready to grow</div><div class="pkg-price">$350</div><div class="pkg-per">per month &middot; 3 month minimum</div><div class="pkg-divider"></div><div class="pkg-feat">3 platforms + Stories</div><div class="pkg-feat">16 posts per month</div><div class="pkg-feat">Pro graphics + templates</div><div class="pkg-feat">1 Reel per month</div><div class="pkg-feat">Community management</div><div class="pkg-feat">Bi-weekly report + check-in</div></div></div>
-    <div class="pkg"><div class="pkg-inner"><div class="pkg-badge-plain">Premium</div><div class="pkg-name">The Canopy</div><div class="pkg-tagline">For brands that want full ownership</div><div class="pkg-price">$550</div><div class="pkg-per">per month &middot; 3 month minimum</div><div class="pkg-divider"></div><div class="pkg-feat">All platforms</div><div class="pkg-feat">24 posts + Stories + 3 Reels</div><div class="pkg-feat">Full brand identity (Canva)</div><div class="pkg-feat">Full community management</div><div class="pkg-feat">Weekly strategy call</div><div class="pkg-feat">VA support 5hrs/month</div></div></div>
-  </div>
-</div>
-</section>
-
+<!-- WORK -->
 <section id="work">
-<div class="sec reveal">
-  <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:40px;">
-    <div><div class="eyebrow">Portfolio</div><div class="sec-title" style="margin-bottom:0;">Selected <em>work</em></div></div>
-    <span style="font-size:12px;color:rgba(42,32,22,0.3);">Click any card to upload your design</span>
+<div class="work-section reveal">
+  <div class="work-header">
+    <span class="work-label">Selected work</span>
+    <span class="work-count">04 Projects</span>
   </div>
-  <div class="work-grid">
-    <div class="wk" onclick="openUpload(0)"><div class="wk-thumb wt1"><div class="wk-inner" id="wi0"><div class="wk-chips" id="wc0"><span class="wk-chip">Staging</span><span class="wk-chip">SMM</span></div><div class="wk-ghost" id="wg0">Before &middot; After</div><img id="wimg0" alt=""></div><div class="wk-upload"><svg width="9" height="9" viewBox="0 0 9 9" fill="none"><path d="M4.5 7V2M2.5 4L4.5 2L6.5 4" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/></svg>Upload</div></div><div class="wk-body"><input class="wk-etitle" id="wt0" value="Home Staging &amp; Interior"><input class="wk-emeta" id="wm0" value="Social media &middot; Canva design &middot; Before/after content"></div></div>
-    <div class="wk" onclick="openUpload(1)"><div class="wk-thumb wt2"><div class="wk-inner" id="wi1"><div class="wk-chips" id="wc1"><span class="wk-chip">Food</span><span class="wk-chip">Design</span></div><div class="wk-ghost" id="wg1">Truffle Risotto</div><img id="wimg1" alt=""></div><div class="wk-upload"><svg width="9" height="9" viewBox="0 0 9 9" fill="none"><path d="M4.5 7V2M2.5 4L4.5 2L6.5 4" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/></svg>Upload</div></div><div class="wk-body"><input class="wk-etitle" id="wt1" value="Food &amp; Restaurant Brand"><input class="wk-emeta" id="wm1" value="Content creation &middot; Photography direction &middot; Reels"></div></div>
-    <div class="wk" onclick="openUpload(2)"><div class="wk-thumb wt3"><div class="wk-inner" id="wi2"><div class="wk-chips" id="wc2"><span class="wk-chip">Property</span><span class="wk-chip">Brand</span></div><div class="wk-ghost" id="wg2">Just Listed</div><img id="wimg2" alt=""></div><div class="wk-upload"><svg width="9" height="9" viewBox="0 0 9 9" fill="none"><path d="M4.5 7V2M2.5 4L4.5 2L6.5 4" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/></svg>Upload</div></div><div class="wk-body"><input class="wk-etitle" id="wt2" value="Real Estate Listings"><input class="wk-emeta" id="wm2" value="Visual identity &middot; Social graphics &middot; Strategy"></div></div>
-    <div class="wk" onclick="openUpload(3)"><div class="wk-thumb wt4"><div class="wk-inner" id="wi3"><div class="wk-chips" id="wc3"><span class="wk-chip">Wellness</span><span class="wk-chip">Content</span></div><div class="wk-ghost" id="wg3">Begin</div><img id="wimg3" alt=""></div><div class="wk-upload"><svg width="9" height="9" viewBox="0 0 9 9" fill="none"><path d="M4.5 7V2M2.5 4L4.5 2L6.5 4" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/></svg>Upload</div></div><div class="wk-body"><input class="wk-etitle" id="wt3" value="Wellness &amp; Lifestyle Brand"><input class="wk-emeta" id="wm3" value="Quote cards &middot; Carousels &middot; Brand voice"></div></div>
+  <div class="work-list">
+
+    <!-- WORK 01 -->
+    <div class="work-item" id="wi0" onclick="openUpload(0)">
+      <div class="work-item-left">
+        <div>
+          <div class="work-item-num">01 ——</div>
+          <input class="work-edit-title" id="wt0" value="Home Staging &amp; Interior" onclick="event.stopPropagation()">
+          <input class="work-edit-meta" id="wm0" value="Social media management · Canva design · Before/after content" onclick="event.stopPropagation()">
+          <div class="work-item-tags">
+            <span class="work-tag">Social Media</span>
+            <span class="work-tag">Canva</span>
+            <span class="work-tag">SMM</span>
+          </div>
+        </div>
+      </div>
+      <div class="work-item-right">
+        <div class="work-img-wrap">
+          <div class="work-img-placeholder">
+            <div class="work-placeholder-bg wbg1"></div>
+            <div class="work-img-label">Before · After</div>
+          </div>
+          <img id="wimg0" class="work-img" alt="Home Staging">
+        </div>
+        <button class="upload-btn" onclick="event.stopPropagation();openUpload(0)">
+          <svg width="9" height="9" viewBox="0 0 9 9" fill="none"><path d="M4.5 7V2M2.5 4L4.5 2L6.5 4" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Upload image
+        </button>
+      </div>
+      <div class="work-arrow">↗</div>
+    </div>
+
+    <!-- WORK 02 -->
+    <div class="work-item" id="wi1" onclick="openUpload(1)">
+      <div class="work-item-left">
+        <div>
+          <div class="work-item-num">02 ——</div>
+          <input class="work-edit-title" id="wt1" value="Food &amp; Restaurant Brand" onclick="event.stopPropagation()">
+          <input class="work-edit-meta" id="wm1" value="Content creation · Photography direction · Reels covers" onclick="event.stopPropagation()">
+          <div class="work-item-tags">
+            <span class="work-tag">Content</span>
+            <span class="work-tag">Design</span>
+            <span class="work-tag">Reels</span>
+          </div>
+        </div>
+      </div>
+      <div class="work-item-right">
+        <div class="work-img-wrap">
+          <div class="work-img-placeholder">
+            <div class="work-placeholder-bg wbg2"></div>
+            <div class="work-img-label">Truffle Risotto</div>
+          </div>
+          <img id="wimg1" class="work-img" alt="Restaurant">
+        </div>
+        <button class="upload-btn" onclick="event.stopPropagation();openUpload(1)">
+          <svg width="9" height="9" viewBox="0 0 9 9" fill="none"><path d="M4.5 7V2M2.5 4L4.5 2L6.5 4" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Upload image
+        </button>
+      </div>
+      <div class="work-arrow">↗</div>
+    </div>
+
+    <!-- WORK 03 -->
+    <div class="work-item" id="wi2" onclick="openUpload(2)">
+      <div class="work-item-left">
+        <div>
+          <div class="work-item-num">03 ——</div>
+          <input class="work-edit-title" id="wt2" value="Real Estate Listings" onclick="event.stopPropagation()">
+          <input class="work-edit-meta" id="wm2" value="Visual identity · Social graphics · Content strategy" onclick="event.stopPropagation()">
+          <div class="work-item-tags">
+            <span class="work-tag">Brand</span>
+            <span class="work-tag">Identity</span>
+            <span class="work-tag">Social</span>
+          </div>
+        </div>
+      </div>
+      <div class="work-item-right">
+        <div class="work-img-wrap">
+          <div class="work-img-placeholder">
+            <div class="work-placeholder-bg wbg3"></div>
+            <div class="work-img-label">Just Listed</div>
+          </div>
+          <img id="wimg2" class="work-img" alt="Real Estate">
+        </div>
+        <button class="upload-btn" onclick="event.stopPropagation();openUpload(2)">
+          <svg width="9" height="9" viewBox="0 0 9 9" fill="none"><path d="M4.5 7V2M2.5 4L4.5 2L6.5 4" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Upload image
+        </button>
+      </div>
+      <div class="work-arrow">↗</div>
+    </div>
+
+    <!-- WORK 04 -->
+    <div class="work-item" id="wi3" onclick="openUpload(3)">
+      <div class="work-item-left">
+        <div>
+          <div class="work-item-num">04 ——</div>
+          <input class="work-edit-title" id="wt3" value="Wellness &amp; Lifestyle" onclick="event.stopPropagation()">
+          <input class="work-edit-meta" id="wm3" value="Quote cards · Carousels · Brand voice development" onclick="event.stopPropagation()">
+          <div class="work-item-tags">
+            <span class="work-tag">Content</span>
+            <span class="work-tag">Canva</span>
+            <span class="work-tag">Wellness</span>
+          </div>
+        </div>
+      </div>
+      <div class="work-item-right">
+        <div class="work-img-wrap">
+          <div class="work-img-placeholder">
+            <div class="work-placeholder-bg wbg4"></div>
+            <div class="work-img-label">Begin</div>
+          </div>
+          <img id="wimg3" class="work-img" alt="Wellness">
+        </div>
+        <button class="upload-btn" onclick="event.stopPropagation();openUpload(3)">
+          <svg width="9" height="9" viewBox="0 0 9 9" fill="none"><path d="M4.5 7V2M2.5 4L4.5 2L6.5 4" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Upload image
+        </button>
+      </div>
+      <div class="work-arrow">↗</div>
+    </div>
+
   </div>
-  <input type="file" id="file-input" accept="image/*">
 </div>
 </section>
+<input type="file" id="file-input" accept="image/*">
 
-<div class="proc-dark reveal">
-  <div class="proc-eyebrow">How we work</div>
-  <div class="proc-title">The Christie Creative<br><em>way of working</em></div>
-  <div class="proc-grid">
-    <div class="ps"><div class="ps-n">01</div><div class="ps-t">Listen first</div><div class="ps-d">We start with your audience, your goals, and what trust looks like &mdash; before a single design is made.</div></div>
-    <div class="ps"><div class="ps-n">02</div><div class="ps-t">Build with intention</div><div class="ps-d">Every post, caption, and design is created with a clear reason &mdash; not just to fill a calendar.</div></div>
-    <div class="ps"><div class="ps-n">03</div><div class="ps-t">Stay close</div><div class="ps-d">You always know where things stand. We check in, report clearly, and adjust as your brand grows.</div></div>
-    <div class="ps"><div class="ps-n">04</div><div class="ps-t">Deliver &amp; grow</div><div class="ps-d">Clean handover, full documentation, and a brand that keeps compounding in value long after we finish.</div></div>
-  </div>
-</div>
-
+<!-- ABOUT -->
 <section id="about">
-<div class="sec reveal">
-  <div class="about-grid">
+<div class="about-strip reveal">
+  <div class="about-left">
     <div>
-      <div class="eyebrow">The person behind it</div>
-      <h2 class="about-title">Not just a VA.<br>A <em>creative partner</em><br>who thinks like<br>a business owner.</h2>
-      <p class="about-body">I&rsquo;m Noreen Christie Cabuena &mdash; a Business Development professional turned creative studio founder. Four years of working in sales, marketing, and brand development means I understand what actually moves a business forward.</p>
-      <div>
-        <div class="af"><div class="af-icon"><svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="4.5" stroke="#A85830" stroke-width="1"/><path d="M6.5 4 L6.5 6.5 L8.5 8.5" stroke="#A85830" stroke-width="1" stroke-linecap="round"/></svg></div><div class="af-text"><strong>Flexible, results-driven schedule</strong> &mdash; EST &amp; CET aligned. Outcomes, not timesheets.</div></div>
-        <div class="af"><div class="af-icon"><svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 11 C6.5 11 2 7.5 2 4.8 C2 3 4 1.5 6.5 1.5 C9 1.5 11 3 11 4.8 C11 7.5 6.5 11 6.5 11Z" stroke="#A85830" stroke-width="1" fill="none"/><circle cx="6.5" cy="4.8" r="1.5" fill="#A85830" fill-opacity="0.35" stroke="#A85830" stroke-width="0.8"/></svg></div><div class="af-text"><strong>Quezon City, Philippines</strong> &mdash; serving clients in the US, Australia, Europe, and locally.</div></div>
-        <div class="af"><div class="af-icon"><svg width="13" height="13" viewBox="0 0 13 13" fill="none"><rect x="2" y="3" width="9" height="7" rx="1.5" stroke="#A85830" stroke-width="1"/><path d="M2 5.5 L11 5.5" stroke="#A85830" stroke-width="0.8"/></svg></div><div class="af-text"><strong>BS Business Administration</strong> &mdash; Major in Management Accounting.</div></div>
+      <div class="about-eyebrow">The person behind it</div>
+      <h2 class="about-h">Not just a VA.<br>A <em>creative partner</em><br>who thinks like<br>a business owner.</h2>
+    </div>
+    <p class="about-body">I'm Noreen Christie Cabuena — a Business Development professional turned creative studio founder. Four years in sales, marketing, and brand development means I understand what actually moves a business forward. I don't just make things look good. I make them work.</p>
+  </div>
+  <div class="about-right">
+    <div class="timeline">
+      <div class="tl">
+        <div class="tl-year">2021 – Now</div>
+        <div class="tl-content"><div class="tl-title">Freelance Brand Consultant</div><div class="tl-sub">SS Enertech · Brand development & environmental sector</div></div>
+      </div>
+      <div class="tl">
+        <div class="tl-year">2023 – Now</div>
+        <div class="tl-content"><div class="tl-title">Business Development Manager</div><div class="tl-sub">Endaya Corporation · Sales & marketing</div></div>
+      </div>
+      <div class="tl">
+        <div class="tl-year">2025 – Now</div>
+        <div class="tl-content"><div class="tl-title">Founder, Christie Creative</div><div class="tl-sub">Full-service creative studio for trust-first brands</div></div>
       </div>
     </div>
-    <div>
-      <div class="tl-item"><div class="tl-dot">1</div><div><div class="tl-year">2021 &ndash; Present</div><div class="tl-title">Freelance Brand Consultant</div><div class="tl-sub">SS Enertech &middot; Brand development</div></div></div>
-      <div class="tl-item"><div class="tl-dot">2</div><div><div class="tl-year">2023 &ndash; Present</div><div class="tl-title">Business Development Manager</div><div class="tl-sub">Endaya Corporation &middot; Sales &amp; marketing</div></div></div>
-      <div class="tl-item"><div class="tl-dot">3</div><div><div class="tl-year">2025 &ndash; Present</div><div class="tl-title">Founder, Christie Creative</div><div class="tl-sub">Full-service creative studio</div></div></div>
-      <div class="tl-item" style="padding-bottom:0;"><div class="tl-dot g">&#10003;</div><div><div class="tl-year">Education</div><div class="tl-title">BS Business Administration</div><div class="tl-sub">Major in Management Accounting &middot; Philippines</div></div></div>
+    <div class="about-cred">
+      <span>BS Business Administration · Management Accounting</span>
+      <span>Quezon City, Philippines · EST &amp; CET aligned</span>
+      <span>Fluent English · Available for new projects</span>
     </div>
   </div>
 </div>
 </section>
 
-<section id="contact">
-<div class="sec reveal">
-  <div class="contact-grid">
+<!-- SERVICES -->
+<section id="services">
+<div class="services-section reveal">
+  <div class="services-header">
     <div>
-      <div class="eyebrow">Get in touch</div>
-      <h2 class="ct-title">Let&rsquo;s grow<br>something<br><em>together.</em></h2>
-      <p class="ct-body">We take on a focused number of clients each month so every project gets our full attention.</p>
-      <div>
-        <a href="mailto:ncabuena@gmail.com" class="ct-link"><div class="ct-icon">&#9993;</div>ncabuena@gmail.com</a>
-        <a href="https://ncabuena.github.io" target="_blank" class="ct-link"><div class="ct-icon">&#8599;</div>ncabuena.github.io</a>
-        <a href="https://www.onlinejobs.ph" target="_blank" class="ct-link"><div class="ct-icon">&#128188;</div>OnlineJobs.ph profile</a>
+      <div class="svc-eyebrow">What we do</div>
+      <h2 class="svc-h">Services that <em>actually</em><br>grow brands</h2>
+    </div>
+    <p class="svc-note">Built for companies whose audience needs to trust them fast.</p>
+  </div>
+  <div class="svc-grid">
+    <div class="svc-card">
+      <div class="svc-num">01 ——</div>
+      <div class="svc-title">Social Media Management</div>
+      <p class="svc-desc">Content calendars, captions with real hooks, scheduling, and community management that builds genuine loyalty — not just metrics.</p>
+      <div class="svc-tags"><span class="svc-tag">Facebook</span><span class="svc-tag">Instagram</span><span class="svc-tag">TikTok</span><span class="svc-tag">Scheduling</span></div>
+    </div>
+    <div class="svc-card">
+      <div class="svc-num">02 ——</div>
+      <div class="svc-title">Graphic Design &amp; Branding</div>
+      <p class="svc-desc">Visual identity, Canva templates, social graphics, and brand systems that look intentional across every touchpoint.</p>
+      <div class="svc-tags"><span class="svc-tag">Canva</span><span class="svc-tag">Social posts</span><span class="svc-tag">Brand identity</span><span class="svc-tag">Logo</span></div>
+    </div>
+    <div class="svc-card">
+      <div class="svc-num">03 ——</div>
+      <div class="svc-title">Virtual Assistance &amp; Admin</div>
+      <p class="svc-desc">Email management, research, scheduling, data entry, and content writing — the backbone that keeps your business moving without slowing you down.</p>
+      <div class="svc-tags"><span class="svc-tag">Email</span><span class="svc-tag">Calendar</span><span class="svc-tag">Research</span><span class="svc-tag">Copywriting</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="pkg-section reveal">
+  <div class="pkg-eyebrow">Retainer packages — starting from</div>
+  <div class="pkg-grid">
+    <div class="pkg">
+      <div class="pkg-inner">
+        <div class="pkg-badge b-plain">Starter</div>
+        <div class="pkg-name">The Seedling</div>
+        <div class="pkg-sub">For brands just getting started</div>
+        <div class="pkg-price">$200</div>
+        <div class="pkg-period">per month · 3 month minimum</div>
+        <div class="pkg-div"></div>
+        <div class="pkg-feat">2 platforms (FB + IG)</div>
+        <div class="pkg-feat">10 posts per month</div>
+        <div class="pkg-feat">Captions + hashtags</div>
+        <div class="pkg-feat">Basic Canva graphics</div>
+        <div class="pkg-feat">Monthly report</div>
       </div>
     </div>
-    <div class="ct-form">
-      <div class="f2">
-        <div><label class="fl">Your name</label><input class="fi" type="text" placeholder="Jane Ramos"></div>
-        <div><label class="fl">Company</label><input class="fi" type="text" placeholder="Your brand"></div>
+    <div class="pkg featured">
+      <div class="pkg-inner">
+        <div class="pkg-badge b-feature">Most popular</div>
+        <div class="pkg-name">The Garden</div>
+        <div class="pkg-sub">For brands ready to grow</div>
+        <div class="pkg-price">$350</div>
+        <div class="pkg-period">per month · 3 month minimum</div>
+        <div class="pkg-div"></div>
+        <div class="pkg-feat">3 platforms + Stories</div>
+        <div class="pkg-feat">16 posts per month</div>
+        <div class="pkg-feat">Pro graphics + templates</div>
+        <div class="pkg-feat">1 Reel per month</div>
+        <div class="pkg-feat">Community management</div>
+        <div class="pkg-feat">Bi-weekly report + check-in</div>
       </div>
-      <label class="fl">Email</label><input class="fi" type="email" placeholder="jane@yourbrand.com">
-      <label class="fl">Service needed</label>
-      <select class="fi" style="appearance:none;-webkit-appearance:none;">
-        <option value="">Select...</option>
-        <option>Social Media Management</option>
-        <option>Graphic Design &amp; Branding</option>
-        <option>Virtual Assistance</option>
-        <option>Full package</option>
-      </select>
-      <label class="fl">Tell me about your brand</label>
-      <textarea class="fi fa" placeholder="What do you do, who is your audience, and what does trust look like for your business?"></textarea>
+    </div>
+    <div class="pkg">
+      <div class="pkg-inner">
+        <div class="pkg-badge b-plain">Premium</div>
+        <div class="pkg-name">The Canopy</div>
+        <div class="pkg-sub">For brands that want full ownership</div>
+        <div class="pkg-price">$550</div>
+        <div class="pkg-period">per month · 3 month minimum</div>
+        <div class="pkg-div"></div>
+        <div class="pkg-feat">All platforms</div>
+        <div class="pkg-feat">24 posts + Stories + 3 Reels</div>
+        <div class="pkg-feat">Full brand identity (Canva)</div>
+        <div class="pkg-feat">Full community management</div>
+        <div class="pkg-feat">Weekly strategy call</div>
+        <div class="pkg-feat">VA support 5hrs/month</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="process-section reveal">
+  <div class="proc-header">
+    <div class="proc-eyebrow">How we work</div>
+    <h2 class="proc-h">The Christie Creative<br><em>way of working</em></h2>
+  </div>
+  <div class="proc-steps">
+    <div class="proc-step"><div class="proc-n">01</div><div class="proc-t">Listen first</div><p class="proc-d">We start with your audience, your goals, and what trust looks like in your industry — before a single design is made.</p></div>
+    <div class="proc-step"><div class="proc-n">02</div><div class="proc-t">Build with intention</div><p class="proc-d">Every post, caption, and design is created with a clear reason — not just to fill a calendar, but to move something forward.</p></div>
+    <div class="proc-step"><div class="proc-n">03</div><div class="proc-t">Stay close</div><p class="proc-d">You always know where things stand. We check in, report clearly, and adjust as your brand grows — no disappearing acts.</p></div>
+    <div class="proc-step"><div class="proc-n">04</div><div class="proc-t">Deliver &amp; grow</div><p class="proc-d">Clean handover, full documentation, and a brand that keeps compounding in value long after the project ends.</p></div>
+  </div>
+</div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+<div class="contact-section reveal">
+  <div class="contact-left">
+    <div>
+      <div class="contact-eyebrow">Get in touch</div>
+      <h2 class="contact-h">Let's grow<br>something<br><em>together.</em></h2>
+    </div>
+    <div class="contact-links">
+      <a href="mailto:ncabuena@gmail.com" class="contact-link">
+        <span>ncabuena@gmail.com</span>
+        <span class="contact-link-arrow">↗</span>
+      </a>
+      <a href="https://ncabuena.github.io" target="_blank" class="contact-link">
+        <span>ncabuena.github.io</span>
+        <span class="contact-link-arrow">↗</span>
+      </a>
+      <a href="https://www.onlinejobs.ph" target="_blank" class="contact-link">
+        <span>OnlineJobs.ph profile</span>
+        <span class="contact-link-arrow">↗</span>
+      </a>
+    </div>
+    <div style="margin-top:32px;padding-top:24px;border-top:1px solid var(--faint);">
+      <div style="font-size:12px;color:rgba(30,26,20,0.35);line-height:1.8;">
+        Quezon City, Philippines<br>
+        EST &amp; CET timezone aligned<br>
+        Available for new projects in 2025
+      </div>
+    </div>
+  </div>
+  <div class="contact-right">
+    <div style="margin-bottom:32px;">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:13px;color:var(--mid);letter-spacing:0.06em;">Send a message</div>
+    </div>
+    <div class="form-2col">
+      <div><label class="form-label">Your name</label><input class="form-input" type="text" placeholder="Jane Ramos"></div>
+      <div><label class="form-label">Company</label><input class="form-input" type="text" placeholder="Your brand"></div>
+    </div>
+    <label class="form-label">Email address</label>
+    <input class="form-input" type="email" placeholder="jane@yourbrand.com">
+    <label class="form-label">Service needed</label>
+    <select class="form-input form-select">
+      <option value="">Select a service...</option>
+      <option>Social Media Management</option>
+      <option>Graphic Design &amp; Branding</option>
+      <option>Virtual Assistance &amp; Admin</option>
+      <option>Full package</option>
+    </select>
+    <label class="form-label">Tell me about your brand</label>
+    <textarea class="form-input form-textarea" placeholder="What do you do, who is your audience, and what does trust look like for your business?"></textarea>
+    <div class="btn-submit-wrap">
       <button class="btn-submit"><span>Send message &rarr;</span></button>
     </div>
   </div>
 </div>
 </section>
 
+<!-- FOOTER -->
 <footer>
-  <div class="fm"><span class="fm1">Christie</span><span class="fmsep">&middot;</span><span class="fm2">Creative</span></div>
-  <div class="flinks"><a href="#work">Work</a><a href="#services">Services</a><a href="#about">About</a><a href="#contact">Contact</a></div>
-  <div class="fcopy">&copy; 2025 Christie Creative. All rights reserved.</div>
+  <a href="#home" class="foot-logo"><span class="fl1">Christie</span><span class="fl-sep">·</span><span class="fl2">Creative</span></a>
+  <div class="foot-links">
+    <a href="#work">Work</a>
+    <a href="#about">About</a>
+    <a href="#services">Services</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <div class="foot-copy">&copy; 2025 Christie Creative</div>
 </footer>
 
 <script>
-/* ═══════════════════════════════════════════════════════
-   SCROLL-REACTIVE CHRYSANTHEMUM
-   Seed (0%) → Stem grows (0-25%) → Leaves unfurl (20-40%)
-   → Bud forms (30-55%) → Bloom opens (50-85%) → Pollen drifts (75-100%)
-═══════════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════
+   CUSTOM CURSOR
+═══════════════════════════════════════════════════ */
+var cur=document.getElementById('cursor');
+var ring=document.getElementById('cursor-ring');
+var mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',function(e){
+  mx=e.clientX;my=e.clientY;
+  cur.style.left=mx+'px';cur.style.top=my+'px';
+});
+(function animRing(){
+  rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;
+  ring.style.left=rx+'px';ring.style.top=ry+'px';
+  requestAnimationFrame(animRing);
+})();
+document.querySelectorAll('a,button,.work-item').forEach(function(el){
+  el.addEventListener('mouseenter',function(){
+    cur.style.width='14px';cur.style.height='14px';
+    cur.style.background='var(--terra)';
+    ring.style.width='52px';ring.style.height='52px';
+    ring.style.borderColor='var(--terra)';
+  });
+  el.addEventListener('mouseleave',function(){
+    cur.style.width='10px';cur.style.height='10px';
+    cur.style.background='var(--terra)';
+    ring.style.width='36px';ring.style.height='36px';
+    ring.style.borderColor='rgba(168,88,48,0.4)';
+  });
+});
+
+/* ═══════════════════════════════════════════════════
+   AMBIENT CHRYSANTHEMUM BACKGROUND
+   Subtle, textile-like, barely visible — 4% opacity
+   Renders a tiled chrysanthemum pattern on the background
+═══════════════════════════════════════════════════ */
 (function(){
-  var C=document.getElementById('bloom-canvas');
+  var C=document.getElementById('bg-canvas');
   var ctx=C.getContext('2d');
-  var sp=0,tsp=0,t=0,hov=false,mx=0,my=0;
+  var t=0;
 
-  function resize(){C.width=window.innerWidth*0.5;C.height=window.innerHeight;}
-  resize();
-  window.addEventListener('resize',resize);
+  function resize(){C.width=window.innerWidth;C.height=window.innerHeight;}
+  resize();window.addEventListener('resize',resize);
 
-  window.addEventListener('scroll',function(){
-    var max=document.body.scrollHeight-window.innerHeight;
-    tsp=max>0?window.scrollY/max:0;
-  });
-
-  C.addEventListener('mousemove',function(e){
-    var r=C.getBoundingClientRect();mx=e.clientX-r.left;my=e.clientY-r.top;hov=true;
-  });
-  C.addEventListener('mouseleave',function(){hov=false;});
-
-  function lerp(a,b,v){return a+(b-a)*v;}
-  function clamp(v,a,b){return Math.max(a,Math.min(b,v));}
-  function ease(v){return v<0.5?2*v*v:1-Math.pow(-2*v+2,2)/2;}
-
-  function petal(x,y,len,w,a,alpha,col){
-    ctx.save();ctx.translate(x,y);ctx.rotate(a);ctx.globalAlpha=alpha;
-    ctx.beginPath();
-    ctx.moveTo(0,0);
-    ctx.bezierCurveTo(-w*0.55,-len*0.3,-w*0.35,-len*0.78,0,-len);
-    ctx.bezierCurveTo(w*0.35,-len*0.78,w*0.55,-len*0.3,0,0);
-    ctx.fillStyle=col;ctx.fill();ctx.restore();
-  }
-
-  function leaf(x,y,len,a,alpha){
-    ctx.save();ctx.translate(x,y);ctx.rotate(a+Math.sin(t*0.6+a)*0.05);
-    ctx.globalAlpha=alpha;
-    ctx.beginPath();
-    ctx.moveTo(0,0);
-    ctx.bezierCurveTo(-len*0.28,-len*0.38,-len*0.1,-len*0.85,0,-len);
-    ctx.bezierCurveTo(len*0.1,-len*0.85,len*0.28,-len*0.38,0,0);
-    ctx.fillStyle='#7A9B7E';ctx.fill();ctx.restore();
-  }
-
-  /* pollen particles */
-  var pollen=[];
-  for(var i=0;i<22;i++){
-    pollen.push({
-      a:Math.random()*Math.PI*2,
-      r:55+Math.random()*55,
-      spd:0.18+Math.random()*0.28,
-      sz:0.8+Math.random()*2,
-      ph:Math.random()*Math.PI*2,
-      al:0.12+Math.random()*0.22
-    });
+  function drawMum(x,y,size,rotation){
+    ctx.save();ctx.translate(x,y);ctx.rotate(rotation);
+    /* outer ring petals */
+    for(var i=0;i<16;i++){
+      var a=(i/16)*Math.PI*2;
+      ctx.save();ctx.rotate(a);
+      ctx.beginPath();
+      var l=size;var w=size*0.22;
+      ctx.moveTo(0,0);
+      ctx.bezierCurveTo(-w*0.5,-l*0.3,-w*0.35,-l*0.75,0,-l);
+      ctx.bezierCurveTo(w*0.35,-l*0.75,w*0.5,-l*0.3,0,0);
+      ctx.fillStyle='#C8941A';ctx.fill();
+      ctx.restore();
+    }
+    /* inner ring */
+    for(var i=0;i<12;i++){
+      var a=(i/12)*Math.PI*2+Math.PI/12;
+      ctx.save();ctx.rotate(a);
+      ctx.beginPath();
+      var l=size*0.6;var w=size*0.18;
+      ctx.moveTo(0,0);
+      ctx.bezierCurveTo(-w*0.5,-l*0.3,-w*0.35,-l*0.75,0,-l);
+      ctx.bezierCurveTo(w*0.35,-l*0.75,w*0.5,-l*0.3,0,0);
+      ctx.fillStyle='#E8B840';ctx.fill();
+      ctx.restore();
+    }
+    /* centre */
+    ctx.beginPath();ctx.arc(0,0,size*0.15,0,Math.PI*2);
+    ctx.fillStyle='#1C2B1A';ctx.fill();
+    ctx.restore();
   }
 
   function frame(){
     requestAnimationFrame(frame);
+    t+=0.003;
     ctx.clearRect(0,0,C.width,C.height);
-    sp=lerp(sp,tsp,0.055);
-    t+=hov?0.028:0.013;
-
-    var W=C.width,H=C.height;
-    var cx=W*0.5,cy=H*0.42;
-
-    /* ── SEED ── */
-    var seedA=clamp(1-sp*14,0,1);
-    if(seedA>0.01){
-      ctx.save();ctx.translate(cx,cy+55);ctx.globalAlpha=seedA;
-      ctx.beginPath();ctx.arc(0,0,7+Math.sin(t*2)*2,0,Math.PI*2);ctx.fillStyle='#C8941A';ctx.fill();
-      ctx.beginPath();ctx.arc(0,0,4,0,Math.PI*2);ctx.fillStyle='#1C2B1A';ctx.fill();
-      for(var r=0;r<3;r++){
-        var pr=(t*0.7+r*0.33)%1;
-        ctx.beginPath();ctx.arc(0,0,7+pr*38,0,Math.PI*2);
-        ctx.strokeStyle='#C8941A';ctx.globalAlpha=seedA*(1-pr)*0.25;ctx.lineWidth=1;ctx.stroke();
-      }
-      ctx.restore();
-    }
-
-    /* ── STEM ── */
-    var stemP=clamp((sp-0.04)/0.22,0,1);
-    var stemLen=stemP*155;
-    var sway=Math.sin(t*0.45)*4*stemP;
-    if(stemLen>1){
-      ctx.save();ctx.translate(cx,cy);
-      ctx.beginPath();ctx.moveTo(0,stemLen*0.5);
-      ctx.bezierCurveTo(sway*0.5,stemLen*0.25,-sway*0.3,stemLen*0.1,0,0);
-      ctx.strokeStyle='#1C2B1A';ctx.lineWidth=2;ctx.globalAlpha=stemP;ctx.lineCap='round';ctx.stroke();
-      ctx.restore();
-    }
-
-    /* ── LEAVES ── */
-    var leafP=ease(clamp((sp-0.18)/0.22,0,1));
-    if(leafP>0.01){
-      ctx.save();ctx.translate(cx,cy);
-      leaf(sway*0.35,78,28*leafP,-Math.PI*0.38,leafP*0.78);
-      leaf(-sway*0.22,58,23*leafP,Math.PI*1.4,leafP*0.68);
-      leaf(sway*0.15,38,19*leafP,-Math.PI*0.28,leafP*0.55);
-      ctx.restore();
-    }
-
-    /* ── BUD ── */
-    var budP=ease(clamp((sp-0.28)/0.27,0,1));
-    if(budP>0.01){
-      ctx.save();ctx.translate(cx,cy);
-      var blen=24*budP;
-      for(var i=0;i<8;i++){
-        var a=(i/8)*Math.PI*2;
-        petal(0,0,blen*(1-budP*0.45),3.5*budP,a,budP*0.55,'#C8941A');
-      }
-      ctx.beginPath();ctx.arc(0,0,6*budP,0,Math.PI*2);ctx.fillStyle='#1C2B1A';ctx.globalAlpha=budP;ctx.fill();
-      ctx.restore();
-    }
-
-    /* ── BLOOM ── */
-    var bloomP=ease(clamp((sp-0.48)/0.37,0,1));
-    if(bloomP>0.01){
-      ctx.save();ctx.translate(cx,cy);
-      var bob=Math.sin(t*0.6)*3*bloomP;
-      ctx.translate(0,bob);
-      ctx.rotate(Math.sin(t*0.38)*0.04*bloomP);
-
-      /* full stem underneath */
-      ctx.beginPath();ctx.moveTo(0,120);
-      ctx.bezierCurveTo(sway,60,-sway*0.55,20,0,0);
-      ctx.strokeStyle='#1C2B1A';ctx.lineWidth=2;ctx.globalAlpha=0.78;ctx.lineCap='round';ctx.stroke();
-
-      /* leaves */
-      leaf(sway*0.38,78,28,-Math.PI*0.38,0.75);
-      leaf(-sway*0.25,58,23,Math.PI*1.4,0.65);
-      leaf(sway*0.16,38,19,-Math.PI*0.28,0.55);
-
-      /* sage outer */
-      for(var i=0;i<14;i++){
-        var a=(i/14)*Math.PI*2+Math.sin(t*0.28+i)*0.04;
-        var wv=1+Math.sin(t*1.4+i*0.75)*0.05;
-        petal(0,0,66*bloomP*wv,8*bloomP,a,0.18*bloomP,'#7A9B7E');
-      }
-      /* gold amber */
-      for(var i=0;i<18;i++){
-        var a=(i/18)*Math.PI*2+Math.PI/18+Math.sin(t*0.48+i)*0.05;
-        var wv=1+Math.sin(t*1.75+i*0.85)*0.06;
-        petal(0,0,52*bloomP*wv,7.5*bloomP,a,0.52*bloomP,'#C8941A');
-      }
-      /* bright gold */
-      for(var i=0;i<22;i++){
-        var a=(i/22)*Math.PI*2+Math.sin(t*0.65+i*0.48)*0.06;
-        var wv=1+Math.sin(t*1.95+i)*0.07;
-        petal(0,0,38*bloomP*wv,6.5*bloomP,a,0.76*bloomP,'#E8B840');
-      }
-      /* inner cream */
-      for(var i=0;i<14;i++){
-        var a=(i/14)*Math.PI*2+Math.PI/14+Math.sin(t*0.88+i*0.58)*0.07;
-        var wv=1+Math.sin(t*2.1+i*1.05)*0.08;
-        petal(0,0,25*bloomP*wv,5*bloomP,a,0.88*bloomP,'#F0D070');
-      }
-
-      /* centre */
-      var cg=0.84+Math.sin(t*1.4)*0.16;
-      ctx.globalAlpha=bloomP;
-      ctx.beginPath();ctx.arc(0,0,11*bloomP,0,Math.PI*2);ctx.fillStyle='#1C2B1A';ctx.fill();
-      ctx.beginPath();ctx.arc(0,0,7*bloomP,0,Math.PI*2);ctx.fillStyle='#C8941A';ctx.globalAlpha=cg*bloomP;ctx.fill();
-      ctx.beginPath();ctx.arc(0,0,4*bloomP,0,Math.PI*2);ctx.fillStyle='#F0D070';ctx.globalAlpha=bloomP;ctx.fill();
-      ctx.restore();
-    }
-
-    /* ── POLLEN DRIFTS FREE ── */
-    var pollenP=clamp((sp-0.73)/0.27,0,1);
-    if(pollenP>0.01){
-      ctx.save();ctx.translate(cx,cy);
-      pollen.forEach(function(p){
-        p.a+=p.spd*0.014;
-        var r=p.r+Math.sin(t*0.78+p.ph)*8;
-        var px=Math.cos(p.a)*r;
-        var py=Math.sin(p.a)*r+Math.sin(t*0.58+p.ph)*6;
-        ctx.beginPath();ctx.arc(px,py,p.sz,0,Math.PI*2);
-        ctx.fillStyle='#E8B840';ctx.globalAlpha=p.al*pollenP;ctx.fill();
-      });
-      for(var i=0;i<6;i++){
-        var a2=(i/6)*Math.PI*2+t*0.11+Math.PI*0.1;
-        var r2=94+Math.sin(t*0.5+i*0.7)*10;
-        ctx.beginPath();ctx.arc(Math.cos(a2)*r2,Math.sin(a2)*r2,1.2,0,Math.PI*2);
-        ctx.fillStyle='#A85830';ctx.globalAlpha=(0.16+Math.sin(t*2+i)*0.1)*pollenP;ctx.fill();
-      }
-      ctx.restore();
-    }
-
-    /* mouse pull towards flower */
-    if(hov&&bloomP>0.3){
-      var dx=mx-cx,dy=my-cy,dist=Math.sqrt(dx*dx+dy*dy);
-      if(dist<220){
-        var pull=1-dist/220;
-        ctx.save();ctx.translate(cx+dx*pull*0.05,cy+dy*pull*0.05);
-        ctx.beginPath();ctx.arc(0,0,9,0,Math.PI*2);
-        ctx.strokeStyle='#E8B840';ctx.lineWidth=0.5;ctx.globalAlpha=pull*0.25;ctx.stroke();
-        ctx.restore();
+    /* tile pattern */
+    var spacing=220;
+    var cols=Math.ceil(C.width/spacing)+2;
+    var rows=Math.ceil(C.height/spacing)+2;
+    for(var r=0;r<rows;r++){
+      for(var c=0;c<cols;c++){
+        var x=(c-(cols/2))*spacing+C.width/2+(r%2)*spacing*0.5;
+        var y=r*spacing-20;
+        var size=18+Math.sin(t+r*0.7+c*0.5)*2;
+        var rot=t*0.08+r*0.3+c*0.2;
+        drawMum(x,y,size,rot);
       }
     }
   }
   frame();
-
-  /* ── PROGRESS DOTS ── */
-  var bpEl=document.getElementById('bp');
-  var sections=['home','statement','services','work','about','contact'];
-  sections.forEach(function(id){
-    var d=document.createElement('div');
-    d.className='bpd';
-    d.onclick=function(){var el=document.getElementById(id);if(el)el.scrollIntoView({behavior:'smooth'});};
-    bpEl.appendChild(d);
-  });
-  window.addEventListener('scroll',function(){
-    var dots=bpEl.querySelectorAll('.bpd');
-    sections.forEach(function(id,i){
-      var el=document.getElementById(id);if(!el)return;
-      var r=el.getBoundingClientRect();
-      dots[i].classList.toggle('on',r.top<=window.innerHeight*0.5&&r.bottom>0);
-    });
-  });
-
 })();
 
-/* ── CURSOR SEED TRAIL ── */
-(function(){
-  document.addEventListener('mousemove',function(e){
-    var d=document.createElement('div');
-    var sz=2+Math.random()*3;
-    d.style.cssText='position:fixed;pointer-events:none;z-index:9999;border-radius:50%;'
-      +'background:#C8941A;width:'+sz+'px;height:'+sz+'px;'
-      +'left:'+e.clientX+'px;top:'+e.clientY+'px;'
-      +'transform:translate(-50%,-50%);opacity:0.3;'
-      +'transition:opacity 0.55s,transform 0.55s;';
-    document.body.appendChild(d);
-    requestAnimationFrame(function(){d.style.opacity='0';d.style.transform='translate(-50%,-50%) scale(0.2)';});
-    setTimeout(function(){if(d.parentNode)d.parentNode.removeChild(d);},600);
-  });
-})();
-
-/* ── SCROLL REVEAL ── */
+/* ═══════════════════════════════════════════════════
+   SCROLL REVEAL
+═══════════════════════════════════════════════════ */
 (function(){
   var obs=new IntersectionObserver(function(entries){
-    entries.forEach(function(e){if(e.isIntersecting)e.target.classList.add('visible');});
-  },{threshold:0.1});
+    entries.forEach(function(e){if(e.isIntersecting)e.target.classList.add('in');});
+  },{threshold:0.08});
   document.querySelectorAll('.reveal').forEach(function(el){obs.observe(el);});
-  window.addEventListener('scroll',function(){
-    document.getElementById('nav').classList.toggle('scrolled',window.scrollY>55);
-  });
 })();
 
-/* ── PHOTO UPLOAD ── */
-var cur=null;
+/* ═══════════════════════════════════════════════════
+   PHOTO UPLOAD
+═══════════════════════════════════════════════════ */
+var cur_upload=null;
 var fi=document.getElementById('file-input');
-function openUpload(n){cur=n;fi.click();}
+function openUpload(n){cur_upload=n;fi.click();}
 fi.addEventListener('change',function(){
   if(!this.files||!this.files[0])return;
-  var r=new FileReader(),n=cur;
-  r.onload=function(ev){
+  var reader=new FileReader();var n=cur_upload;
+  reader.onload=function(ev){
     var img=document.getElementById('wimg'+n);
-    img.src=ev.target.result;img.classList.add('loaded');
-    var g=document.getElementById('wg'+n),c=document.getElementById('wc'+n);
-    if(g)g.style.opacity='0';if(c)c.style.opacity='0';
+    img.src=ev.target.result;
+    img.classList.add('loaded');
+    /* hide placeholder text */
+    var wrap=img.parentElement;
+    var ph=wrap.querySelector('.work-img-placeholder');
+    if(ph)ph.style.opacity='0';
   };
-  r.readAsDataURL(this.files[0]);this.value='';
+  reader.readAsDataURL(this.files[0]);this.value='';
 });
-document.querySelectorAll('.wk-etitle,.wk-emeta').forEach(function(el){
+document.querySelectorAll('.work-edit-title,.work-edit-meta').forEach(function(el){
   el.addEventListener('click',function(e){e.stopPropagation();});
 });
 </script>
-</body>
-</html>.htag:hover{border-color:var(--accent);color:var(--accent);background:rgba(212,110,42,0.05);}
-.hero-btns{display:flex;gap:12px;flex-wrap:wrap;}
-.btn-main{
-  background:var(--accent);color:#fff;
-  padding:14px 28px;border-radius:100px;
-  font-size:13px;font-weight:600;
-  border:none;cursor:pointer;
-  transition:all 0.25s;
-  display:flex;align-items:center;gap:8px;
-}
-.btn-main:hover{background:#c05e20;transform:translateY(-2px);box-shadow:0 8px 24px rgba(212,110,42,0.3);}
-.btn-sec{
-  background:transparent;color:var(--brown);
-  padding:14px 28px;border-radius:100px;
-  font-size:13px;font-weight:600;
-  border:2px solid var(--border);cursor:pointer;
-  transition:all 0.25s;
-}
-.btn-sec:hover{border-color:var(--accent);color:var(--accent);}
-
-.hero-right{
-  background:var(--warm);
-  display:flex;flex-direction:column;justify-content:center;
-  padding:60px 60px 60px 40px;
-  position:relative;
-  overflow:hidden;
-}
-/* decorative circles */
-.hero-right::before{
-  content:'';position:absolute;
-  width:300px;height:300px;border-radius:50%;
-  background:rgba(212,110,42,0.06);
-  top:-80px;right:-80px;
-}
-.hero-right::after{
-  content:'';position:absolute;
-  width:200px;height:200px;border-radius:50%;
-  background:rgba(58,125,92,0.06);
-  bottom:-60px;left:-40px;
-}
-
-/* AVATAR CARD */
-.avatar-card{
-  background:var(--white);
-  border-radius:20px;
-  border:1px solid var(--border);
-  padding:28px;
-  margin-bottom:20px;
-  position:relative;z-index:1;
-  display:flex;align-items:center;gap:20px;
-}
-.avatar{
-  width:72px;height:72px;border-radius:50%;
-  background:linear-gradient(135deg,var(--accent) 0%,var(--accent2) 100%);
-  display:flex;align-items:center;justify-content:center;
-  font-family:'Playfair Display',serif;
-  font-size:26px;font-weight:700;color:#fff;
-  flex-shrink:0;
-}
-.avatar-info{}
-.avatar-name{font-size:16px;font-weight:700;color:var(--brown);margin-bottom:3px;}
-.avatar-role{font-size:12px;color:var(--muted);}
-.avatar-status{
-  display:inline-flex;align-items:center;gap:5px;
-  background:rgba(58,125,92,0.1);
-  border:1px solid rgba(58,125,92,0.2);
-  border-radius:100px;padding:4px 10px;
-  font-size:11px;font-weight:600;color:var(--green);
-  margin-top:6px;
-}
-.status-dot{width:5px;height:5px;border-radius:50%;background:var(--green);animation:pulse 1.5s ease-in-out infinite;}
-
-/* MINI STATS */
-.mini-stats{
-  display:grid;grid-template-columns:1fr 1fr;gap:12px;
-  position:relative;z-index:1;
-}
-.mini-stat{
-  background:var(--white);
-  border:1px solid var(--border);
-  border-radius:14px;padding:16px;
-}
-.ms-val{
-  font-family:'Playfair Display',serif;
-  font-size:24px;font-weight:700;
-  color:var(--accent);line-height:1;margin-bottom:4px;
-}
-.ms-label{font-size:11px;color:var(--muted);font-weight:500;}
-
-/* ── MARQUEE ── */
-.marquee-wrap{
-  background:var(--accent);
-  padding:12px 0;overflow:hidden;
-  border-top:1px solid rgba(255,255,255,0.1);
-  border-bottom:1px solid rgba(255,255,255,0.1);
-}
-.marquee-track{
-  display:flex;gap:0;
-  animation:marquee 20s linear infinite;
-  width:max-content;
-}
-@keyframes marquee{from{transform:translateX(0);}to{transform:translateX(-50%);}  }
-.marquee-item{
-  font-size:12px;font-weight:600;
-  color:rgba(255,255,255,0.9);
-  letter-spacing:0.08em;text-transform:uppercase;
-  padding:0 28px;white-space:nowrap;
-  display:flex;align-items:center;gap:12px;
-}
-.marquee-item::after{content:'✦';color:rgba(255,255,255,0.4);font-size:8px;}
-
-/* ── SECTIONS ── */
-section{padding:80px 60px;}
-.sec-eyebrow{
-  font-size:11px;font-weight:600;
-  letter-spacing:0.2em;text-transform:uppercase;
-  color:var(--accent);margin-bottom:10px;
-}
-.sec-title{
-  font-family:'Playfair Display',serif;
-  font-size:clamp(28px,3vw,42px);
-  font-weight:700;line-height:1.15;
-  color:var(--brown);margin-bottom:12px;
-  letter-spacing:-0.01em;
-}
-.sec-title em{font-style:italic;color:var(--accent);}
-.sec-sub{font-size:15px;color:var(--muted);max-width:520px;line-height:1.8;margin-bottom:48px;}
-
-/* ── SERVICES ── */
-.services{background:var(--white);}
-.services-grid{
-  display:grid;grid-template-columns:repeat(3,1fr);gap:20px;
-}
-.svc-card{
-  background:var(--cream);
-  border:1px solid var(--border);
-  border-radius:16px;padding:28px 24px;
-  transition:all 0.3s;
-  cursor:pointer;
-  position:relative;overflow:hidden;
-}
-.svc-card::before{
-  content:'';position:absolute;
-  top:0;left:0;right:0;height:3px;
-  background:var(--accent);
-  transform:scaleX(0);transform-origin:left;
-  transition:transform 0.3s;
-}
-.svc-card:hover::before{transform:scaleX(1);}
-.svc-card:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(44,24,16,0.08);border-color:rgba(212,110,42,0.3);}
-.svc-icon{
-  font-size:32px;margin-bottom:16px;
-  display:block;
-}
-.svc-title{
-  font-family:'Playfair Display',serif;
-  font-size:18px;font-weight:700;
-  color:var(--brown);margin-bottom:8px;
-}
-.svc-desc{font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:16px;}
-.svc-items{display:flex;flex-wrap:wrap;gap:6px;}
-.svc-item{
-  font-size:11px;font-weight:500;
-  padding:4px 10px;border-radius:100px;
-  background:rgba(212,110,42,0.08);
-  color:var(--accent);border:1px solid rgba(212,110,42,0.15);
-}
-
-/* ── ABOUT / STORY ── */
-.about{background:var(--warm);}
-.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;}
-.about-visual{
-  background:var(--white);
-  border-radius:20px;border:1px solid var(--border);
-  padding:32px;
-}
-.timeline{display:flex;flex-direction:column;gap:0;}
-.tl-item{
-  display:flex;gap:16px;
-  padding-bottom:24px;
-  position:relative;
-}
-.tl-item:not(:last-child)::after{
-  content:'';position:absolute;
-  left:15px;top:32px;bottom:0;
-  width:1px;background:var(--border);
-}
-.tl-dot{
-  width:32px;height:32px;border-radius:50%;
-  background:var(--accent);
-  display:flex;align-items:center;justify-content:center;
-  font-size:13px;flex-shrink:0;
-  border:3px solid var(--cream);
-  box-shadow:0 0 0 2px var(--accent);
-  color:white;font-weight:700;font-size:11px;
-}
-.tl-content{}
-.tl-year{font-size:11px;color:var(--accent);font-weight:600;letter-spacing:0.05em;margin-bottom:2px;}
-.tl-title{font-size:14px;font-weight:600;color:var(--brown);margin-bottom:2px;}
-.tl-sub{font-size:12px;color:var(--muted);}
-
-.about-text{}
-.fun-facts{display:flex;flex-direction:column;gap:12px;margin-top:28px;}
-.fun-fact{
-  display:flex;align-items:center;gap:14px;
-  padding:14px 18px;
-  background:var(--white);
-  border-radius:12px;border:1px solid var(--border);
-  font-size:13px;color:var(--text);
-}
-.ff-icon{font-size:20px;flex-shrink:0;}
-
-/* ── TOOLS ── */
-.tools{background:var(--white);}
-.tools-grid{
-  display:grid;grid-template-columns:repeat(4,1fr);gap:16px;
-}
-.tool-card{
-  background:var(--cream);
-  border:1px solid var(--border);
-  border-radius:14px;padding:20px;
-  text-align:center;
-  transition:all 0.25s;
-}
-.tool-card:hover{transform:translateY(-3px);border-color:var(--accent);box-shadow:0 8px 24px rgba(212,110,42,0.1);}
-.tool-icon{font-size:28px;margin-bottom:10px;display:block;}
-.tool-name{font-size:13px;font-weight:600;color:var(--brown);margin-bottom:4px;}
-.tool-level{font-size:11px;color:var(--muted);}
-.tool-bar{
-  height:3px;background:var(--border);border-radius:100px;
-  margin-top:10px;overflow:hidden;
-}
-.tool-fill{height:100%;background:var(--accent);border-radius:100px;}
-
-/* ── SAMPLE WORK ── */
-.work{background:var(--warm);}
-.work-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;}
-.work-card{
-  background:var(--white);
-  border-radius:16px;border:1px solid var(--border);
-  overflow:hidden;
-  transition:all 0.3s;cursor:pointer;
-}
-.work-card:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(44,24,16,0.1);}
-.work-thumb{
-  height:160px;display:flex;align-items:center;justify-content:center;
-  font-size:40px;position:relative;overflow:hidden;
-}
-.wt1{background:linear-gradient(135deg,#2C1810 0%,#7A3E1A 100%);}
-.wt2{background:linear-gradient(135deg,#1A2C1E 0%,#2E6B40 100%);}
-.wt3{background:linear-gradient(135deg,#1A1A30 0%,#3A3A8C 100%);}
-.wt4{background:linear-gradient(135deg,#2C1A2A 0%,#7A3A70 100%);}
-.work-mock{
-  width:100px;background:rgba(255,255,255,0.1);
-  border:1px solid rgba(255,255,255,0.2);
-  border-radius:8px;padding:8px;
-}
-.wm-img{height:48px;background:rgba(255,255,255,0.15);border-radius:4px;margin-bottom:5px;}
-.wm-l{height:5px;background:rgba(255,255,255,0.25);border-radius:3px;margin-bottom:3px;}
-.wm-ls{height:4px;width:65%;background:rgba(255,255,255,0.15);border-radius:3px;}
-.work-label{
-  position:absolute;bottom:10px;left:10px;
-  font-size:9px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;
-  color:rgba(255,255,255,0.5);
-}
-.work-info{padding:18px 20px;}
-.wi-title{font-size:15px;font-weight:700;color:var(--brown);margin-bottom:4px;}
-.wi-type{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;}
-.wi-tags{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap;}
-.wi-tag{font-size:10px;padding:3px 8px;border-radius:100px;background:var(--warm);color:var(--mid);border:1px solid var(--border);}
-
-/* ── CTA ── */
-.cta-section{
-  background:var(--brown);
-  padding:80px 60px;text-align:center;
-}
-.cta-title{
-  font-family:'Playfair Display',serif;
-  font-size:clamp(28px,4vw,50px);
-  font-weight:700;color:#fff;
-  margin-bottom:16px;letter-spacing:-0.01em;
-  line-height:1.15;
-}
-.cta-title em{color:var(--accent2);font-style:italic;}
-.cta-sub{font-size:15px;color:rgba(255,255,255,0.55);margin-bottom:40px;max-width:460px;margin-left:auto;margin-right:auto;line-height:1.8;}
-.cta-cards{display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin-bottom:40px;}
-.cta-card{
-  background:rgba(255,255,255,0.06);
-  border:1px solid rgba(255,255,255,0.12);
-  border-radius:14px;padding:20px 24px;
-  min-width:160px;text-align:center;
-  transition:all 0.2s;cursor:pointer;
-}
-.cta-card:hover{background:rgba(255,255,255,0.1);border-color:var(--accent2);transform:translateY(-2px);}
-.cc-icon{font-size:24px;margin-bottom:8px;}
-.cc-label{font-size:13px;font-weight:600;color:rgba(255,255,255,0.8);}
-.cc-sub{font-size:11px;color:rgba(255,255,255,0.4);margin-top:3px;}
-.cta-btn{
-  background:var(--accent);color:#fff;
-  padding:16px 40px;border-radius:100px;
-  font-size:14px;font-weight:700;
-  border:none;cursor:pointer;
-  transition:all 0.25s;
-  display:inline-flex;align-items:center;gap:8px;
-}
-.cta-btn:hover{background:#c05e20;transform:translateY(-2px);box-shadow:0 12px 32px rgba(212,110,42,0.4);}
-
-/* ── FOOTER ── */
-footer{
-  background:#1A0F0A;
-  padding:24px 60px;
-  display:flex;justify-content:space-between;align-items:center;
-}
-.foot-logo{font-family:'Playfair Display',serif;font-size:16px;color:rgba(255,255,255,0.4);}
-.foot-note{font-size:12px;color:rgba(255,255,255,0.25);}
-
-/* RESPONSIVE */
-@media(max-width:700px){
-  nav{padding:0 20px;}
-  .hero{grid-template-columns:1fr;}
-  .hero-right{display:none;}
-  .hero-left{padding:60px 24px;}
-  section{padding:60px 24px;}
-  .services-grid,.tools-grid{grid-template-columns:1fr 1fr;}
-  .about-grid,.work-grid{grid-template-columns:1fr;}
-  .cta-section{padding:60px 24px;}
-  footer{padding:20px 24px;flex-direction:column;gap:8px;text-align:center;}
-}
-
-/* ANIMATIONS */
-@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
-.hero-badge{animation:fadeUp 0.5s 0.1s both;}
-.hero-name{animation:fadeUp 0.5s 0.2s both;}
-.hero-tagline{animation:fadeUp 0.5s 0.3s both;}
-.hero-tags{animation:fadeUp 0.5s 0.4s both;}
-.hero-btns{animation:fadeUp 0.5s 0.5s both;}
-</style>
-</head>
-<body>
-
-<!-- NAV -->
-<nav>
-  <div class="logo">Noreen <div class="logo-dot"></div></div>
-  <div class="nav-links">
-    <a href="#">Services</a>
-    <a href="#">Work</a>
-    <a href="#">About</a>
-    <button class="nav-cta" onclick="sendPrompt('Help me write a professional pitch email to a potential client')">Hire Me</button>
-  </div>
-</nav>
-
-<!-- HERO -->
-<div class="hero">
-  <div class="hero-left">
-    <div class="hero-badge"><div class="badge-dot"></div> Open to work · EST available</div>
-    <div class="hero-name">Hi, I'm<br><em>Noreen.</em></div>
-    <div class="hero-tagline">Your all-in-one Virtual Assistant — I handle your social media, design, and admin so you can focus on what actually grows your business.</div>
-    <div class="hero-tags">
-      <span class="htag">📱 Social Media</span>
-      <span class="htag">🎨 Canva Design</span>
-      <span class="htag">🗂️ Admin & VA</span>
-      <span class="htag">📧 Email Management</span>
-      <span class="htag">📊 Data Entry</span>
-      <span class="htag">🇺🇸 EST-Friendly</span>
-    </div>
-    <div class="hero-btns">
-      <button class="btn-main" onclick="sendPrompt('I want to hire Noreen as my VA — what are her rates and availability?')">See My Services ↓</button>
-      <button class="btn-sec" onclick="sendPrompt('Help me write a short intro message to send to a potential VA client')">Get In Touch</button>
-    </div>
-  </div>
-  <div class="hero-right">
-    <div class="avatar-card">
-      <div class="avatar">NC</div>
-      <div class="avatar-info">
-        <div class="avatar-name">Noreen Christie Cabuena</div>
-        <div class="avatar-role">VA · SMM · Graphic Designer</div>
-        <div class="avatar-status"><div class="status-dot"></div> Available for new clients</div>
-      </div>
-    </div>
-    <div class="mini-stats">
-      <div class="mini-stat"><div class="ms-val">4+</div><div class="ms-label">Years in business & marketing</div></div>
-      <div class="mini-stat"><div class="ms-val">3</div><div class="ms-label">Core services offered</div></div>
-      <div class="mini-stat"><div class="ms-val">EST</div><div class="ms-label">Timezone aligned</div></div>
-      <div class="mini-stat"><div class="ms-val">100%</div><div class="ms-label">Deadline committed</div></div>
-    </div>
-  </div>
-</div>
-
-<!-- MARQUEE -->
-<div class="marquee-wrap">
-  <div class="marquee-track">
-    <div class="marquee-item">Social Media Management</div>
-    <div class="marquee-item">Canva Graphic Design</div>
-    <div class="marquee-item">Email Management</div>
-    <div class="marquee-item">Data Entry</div>
-    <div class="marquee-item">Calendar & Scheduling</div>
-    <div class="marquee-item">Content Planning</div>
-    <div class="marquee-item">Community Management</div>
-    <div class="marquee-item">Research & Reports</div>
-    <div class="marquee-item">Basic Photo Editing</div>
-    <div class="marquee-item">Facebook · Instagram · TikTok</div>
-    <div class="marquee-item">Social Media Management</div>
-    <div class="marquee-item">Canva Graphic Design</div>
-    <div class="marquee-item">Email Management</div>
-    <div class="marquee-item">Data Entry</div>
-    <div class="marquee-item">Calendar & Scheduling</div>
-    <div class="marquee-item">Content Planning</div>
-    <div class="marquee-item">Community Management</div>
-    <div class="marquee-item">Research & Reports</div>
-    <div class="marquee-item">Basic Photo Editing</div>
-    <div class="marquee-item">Facebook · Instagram · TikTok</div>
-  </div>
-</div>
-
-<!-- SERVICES -->
-<section class="services">
-  <div class="sec-eyebrow">What I do</div>
-  <div class="sec-title">Services that <em>actually</em><br>move the needle</div>
-  <div class="sec-sub">I don't just complete tasks — I bring business thinking to everything I do. Four years in sales and marketing means I understand what your audience actually wants.</div>
-  <div class="services-grid">
-    <div class="svc-card" onclick="sendPrompt('Tell me more about social media management services')">
-      <span class="svc-icon">📱</span>
-      <div class="svc-title">Social Media Management</div>
-      <div class="svc-desc">Strategic content that builds your brand and drives real engagement — not just pretty posts.</div>
-      <div class="svc-items">
-        <span class="svc-item">Content Calendar</span>
-        <span class="svc-item">Captions & Hashtags</span>
-        <span class="svc-item">Scheduling</span>
-        <span class="svc-item">FB · IG · TikTok</span>
-        <span class="svc-item">Community Mgmt</span>
-      </div>
-    </div>
-    <div class="svc-card" onclick="sendPrompt('Tell me more about graphic design services using Canva')">
-      <span class="svc-icon">🎨</span>
-      <div class="svc-title">Graphic Design</div>
-      <div class="svc-desc">Eye-catching visuals that stop the scroll — branded, on-point, and delivered fast.</div>
-      <div class="svc-items">
-        <span class="svc-item">Social Posts</span>
-        <span class="svc-item">Carousels</span>
-        <span class="svc-item">Stories & Reels Covers</span>
-        <span class="svc-item">Flyers</span>
-        <span class="svc-item">Photo Editing</span>
-      </div>
-    </div>
-    <div class="svc-card" onclick="sendPrompt('Tell me more about virtual assistant and admin services')">
-      <span class="svc-icon">🗂️</span>
-      <div class="svc-title">Admin & VA Support</div>
-      <div class="svc-desc">The behind-the-scenes work that keeps your business running smoothly while you focus on the big picture.</div>
-      <div class="svc-items">
-        <span class="svc-item">Email Management</span>
-        <span class="svc-item">Calendar & Scheduling</span>
-        <span class="svc-item">Data Entry</span>
-        <span class="svc-item">Research</span>
-        <span class="svc-item">Google & MS Office</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ABOUT -->
-<section class="about">
-  <div class="about-grid">
-    <div class="about-visual">
-      <div style="font-size:13px;font-weight:600;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:20px;">My journey so far</div>
-      <div class="timeline">
-        <div class="tl-item">
-          <div class="tl-dot">1</div>
-          <div class="tl-content">
-            <div class="tl-year">2021 – Present</div>
-            <div class="tl-title">Freelance Brand Consultant</div>
-            <div class="tl-sub">SS Enertech · Brand development & marketing</div>
-          </div>
-        </div>
-        <div class="tl-item">
-          <div class="tl-dot">2</div>
-          <div class="tl-content">
-            <div class="tl-year">2023 – Present</div>
-            <div class="tl-title">Business Development Manager</div>
-            <div class="tl-sub">Endaya Corporation · Sales & Marketing</div>
-          </div>
-        </div>
-        <div class="tl-item">
-          <div class="tl-dot">3</div>
-          <div class="tl-content">
-            <div class="tl-year">2025 – Present</div>
-            <div class="tl-title">Freelance VA & SMM</div>
-            <div class="tl-sub">Serving clients remotely · EST timezone</div>
-          </div>
-        </div>
-        <div class="tl-item" style="padding-bottom:0;">
-          <div class="tl-dot" style="background:var(--green);">✓</div>
-          <div class="tl-content">
-            <div class="tl-year">Education</div>
-            <div class="tl-title">BS Business Administration</div>
-            <div class="tl-sub">Major in Management Accounting</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="about-text">
-      <div class="sec-eyebrow">About me</div>
-      <div class="sec-title" style="margin-bottom:16px;">Not your average <em>VA</em></div>
-      <p style="color:var(--muted);font-size:14px;line-height:1.8;margin-bottom:8px;">I have a business degree and 4+ years of real-world sales, marketing, and brand development experience. That means when I manage your social media, I'm not just posting — I'm thinking about your audience, your brand, and your goals.</p>
-      <p style="color:var(--muted);font-size:14px;line-height:1.8;">I work on a flexible schedule built around results, not clock-watching. You get someone who is proactive, communicative, and genuinely invested in your success.</p>
-      <div class="fun-facts">
-        <div class="fun-fact"><span class="ff-icon">⏰</span> Flexible hours — I deliver results, not timesheets</div>
-        <div class="fun-fact"><span class="ff-icon">🇺🇸</span> EST-aligned and responsive for US clients</div>
-        <div class="fun-fact"><span class="ff-icon">💬</span> Fluent English, clear communication always</div>
-        <div class="fun-fact"><span class="ff-icon">📈</span> Business brain behind every task I touch</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- TOOLS -->
-<section class="tools">
-  <div class="sec-eyebrow">My toolkit</div>
-  <div class="sec-title">Tools I work <em>well</em> with</div>
-  <div class="sec-sub" style="margin-bottom:36px;">Proficient in everything you need — no learning curve, no hand-holding.</div>
-  <div class="tools-grid">
-    <div class="tool-card"><span class="tool-icon">🎨</span><div class="tool-name">Canva</div><div class="tool-level">Advanced</div><div class="tool-bar"><div class="tool-fill" style="width:90%"></div></div></div>
-    <div class="tool-card"><span class="tool-icon">📘</span><div class="tool-name">Facebook & Instagram</div><div class="tool-level">Advanced</div><div class="tool-bar"><div class="tool-fill" style="width:88%"></div></div></div>
-    <div class="tool-card"><span class="tool-icon">🎵</span><div class="tool-name">TikTok</div><div class="tool-level">Intermediate</div><div class="tool-bar"><div class="tool-fill" style="width:75%"></div></div></div>
-    <div class="tool-card"><span class="tool-icon">📊</span><div class="tool-name">Google Sheets</div><div class="tool-level">Advanced</div><div class="tool-bar"><div class="tool-fill" style="width:85%"></div></div></div>
-    <div class="tool-card"><span class="tool-icon">📧</span><div class="tool-name">Gmail & Google Workspace</div><div class="tool-level">Advanced</div><div class="tool-bar"><div class="tool-fill" style="width:90%"></div></div></div>
-    <div class="tool-card"><span class="tool-icon">📝</span><div class="tool-name">Microsoft Office</div><div class="tool-level">Advanced</div><div class="tool-bar"><div class="tool-fill" style="width:85%"></div></div></div>
-    <div class="tool-card"><span class="tool-icon">📅</span><div class="tool-name">Google Calendar</div><div class="tool-level">Advanced</div><div class="tool-bar"><div class="tool-fill" style="width:88%"></div></div></div>
-    <div class="tool-card"><span class="tool-icon">🔍</span><div class="tool-name">Online Research</div><div class="tool-level">Advanced</div><div class="tool-bar"><div class="tool-fill" style="width:92%"></div></div></div>
-  </div>
-</section>
-
-<!-- SAMPLE WORK -->
-<section class="work">
-  <div class="sec-eyebrow">Portfolio</div>
-  <div class="sec-title">Sample <em>work</em></div>
-  <div class="sec-sub" style="margin-bottom:36px;">Mock designs across different industries — this is the quality and style you can expect.</div>
-  <div class="work-grid">
-    <div class="work-card" onclick="sendPrompt('Help me create home staging social media content in Canva')">
-      <div class="work-thumb wt1"><div class="work-mock"><div class="wm-img"></div><div class="wm-l"></div><div class="wm-ls"></div></div><div class="work-label">Sample Design</div></div>
-      <div class="work-info"><div class="wi-title">Home Staging & Interior</div><div class="wi-type">Before/After · Room Reveals · Tips</div><div class="wi-tags"><span class="wi-tag">Facebook</span><span class="wi-tag">Instagram</span><span class="wi-tag">Canva</span></div></div>
-    </div>
-    <div class="work-card" onclick="sendPrompt('Help me create restaurant social media content in Canva')">
-      <div class="work-thumb wt2"><div class="work-mock"><div class="wm-img"></div><div class="wm-l"></div><div class="wm-ls"></div></div><div class="work-label">Sample Design</div></div>
-      <div class="work-info"><div class="wi-title">Food & Restaurant</div><div class="wi-type">Promos · Menu Posts · Reels Covers</div><div class="wi-tags"><span class="wi-tag">Instagram</span><span class="wi-tag">TikTok</span><span class="wi-tag">Canva</span></div></div>
-    </div>
-    <div class="work-card" onclick="sendPrompt('Help me create real estate social media content in Canva')">
-      <div class="work-thumb wt3"><div class="work-mock"><div class="wm-img"></div><div class="wm-l"></div><div class="wm-ls"></div></div><div class="work-label">Sample Design</div></div>
-      <div class="work-info"><div class="wi-title">Real Estate & Property</div><div class="wi-type">Listings · Market Tips · Branding</div><div class="wi-tags"><span class="wi-tag">Facebook</span><span class="wi-tag">Instagram</span><span class="wi-tag">Canva</span></div></div>
-    </div>
-    <div class="work-card" onclick="sendPrompt('Help me create wellness brand social media content in Canva')">
-      <div class="work-thumb wt4"><div class="work-mock"><div class="wm-img"></div><div class="wm-l"></div><div class="wm-ls"></div></div><div class="work-label">Sample Design</div></div>
-      <div class="work-info"><div class="wi-title">Wellness & Lifestyle</div><div class="wi-type">Quotes · Carousels · Educational</div><div class="wi-tags"><span class="wi-tag">Instagram</span><span class="wi-tag">TikTok</span><span class="wi-tag">Canva</span></div></div>
-    </div>
-  </div>
-</section>
-
-<!-- CTA -->
-<div class="cta-section">
-  <div class="cta-title">Ready to take<br>work off your <em>plate?</em></div>
-  <div class="cta-sub">Let's talk about what you need and how I can help. No long contracts, no rigid hours — just reliable, quality work delivered on time.</div>
-  <div class="cta-cards">
-    <div class="cta-card" onclick="sendPrompt('I want to discuss VA services with Noreen')"><div class="cc-icon">✉️</div><div class="cc-label">Email</div><div class="cc-sub">ncabuena@gmail.com</div></div>
-    <div class="cta-card" onclick="sendPrompt('What is Noreen available for this month?')"><div class="cc-icon">💼</div><div class="cc-label">OnlineJobs.ph</div><div class="cc-sub">View my profile</div></div>
-    <div class="cta-card" onclick="sendPrompt('Download Noreen Cabuena resume')"><div class="cc-icon">📄</div><div class="cc-label">Resume</div><div class="cc-sub">Download PDF</div></div>
-  </div>
-  <button class="cta-btn" onclick="sendPrompt('Help me write a message to a new potential client for VA services')">Let's Work Together →</button>
-</div>
-
-<!-- FOOTER -->
-<footer>
-  <div class="foot-logo">Noreen Christie Cabuena</div>
-  <div class="foot-note">VA · SMM · Canva Design · Quezon City, PH · EST-friendly</div>
-</footer>
-
 </body>
 </html>
